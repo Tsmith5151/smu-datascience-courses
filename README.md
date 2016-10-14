@@ -1,7 +1,5 @@
-# DataScience@SMU
-
 <p align = "center">
-<img src = "https://pbs.twimg.com/profile_images/674674257452883968/NVJbE947.jpg">
+<img src = "https://cdn1.datascience.smu.edu/static/images/smu-mds/program/color.png">
 </p>
 
 
