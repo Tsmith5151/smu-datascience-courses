@@ -1,0 +1,136 @@
+---
+title: "Doing Data Science"
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Doing Data Science
+
+#### Trace Smith
+#### Homework #4
+
+Write bootstrap code to illustrate the central limit theorem in R markdown and push the result to GitHub. Use a normal distribution with two different sample sizes and an exponential distribution with two different sample sizes. Correct code alone is insufficient. Please also comment on the code and explain the results. For help, see the lotsa.medians function in Unit 4. The deliverable is a link to a GitHub repo containing the code.
+
+**Central Limit Theorem:** The sampling distribution of the mean of any independent, random variable will be normal or nearly normal, if the sample size is large enough. The distribution of means will increasingly approximate a normal distribution as the size N of samples increases (i.e. >30). From the code and histograms below, we see that as the distribution of sample x’s for the "n" boostraps increases, the distribution approaches normality. Furthermore, for the exponential distribution, the distribution of bootstrap means also approaches normality as the number of samples increases.
+
+### Normal Distribution - One Sample:
+
+```r
+#create a bootstrap function
+bootstrap<- function(d,r,n){ #pass arguments d,r,n
+    norm <- rnorm(d) #random normal distribution with #d observations
+    bootmean <- numeric(r) #initialize bootmean vector 
+    #loop through "r" times and sample from "norm" with replacement "n" times
+    for(i in 1:r){
+    boot.sample <- sample(norm,n,replace=TRUE) #replace = TRUE
+    bootmean[i] <- mean(boot.sample) #take the average of samples
+    }
+    #create histogram of bootstrap means
+    hist(bootmean, density=70, main=paste("Histogram of Bootsample Means"), 
+    border="red",col="blue", axes=TRUE) #add color and border 
+    }
+
+#call bootstrap function; passing 100 observations to generate a normal distribution
+#loop through 1000 times (1,000 different bootstraps), sample size of 50
+
+bootstrap(100,1000,50) 
+```
+
+```r
+#call bootstrap function
+bootstrap(100,1000,10)
+```
+
+
+### Exponential Distribution - One Sample:
+
+
+```r
+#create a bootstrap function
+bootstrap<- function(d,r,n){ #pass arguments d,r,n
+    expo <- rexp(d) #random exponential distribution with #d observations
+    bootmean <- numeric(r) #initialize bootmean vector 
+    #loop through "r" times and sample from "norm" with replacement "n" times
+    for(i in 1:r){
+    boot.sample <- sample(expo,n,replace=TRUE) #replace = TRUE
+    bootmean[i] <- mean(boot.sample) #take the average of samples
+    }
+    #create histogram of bootstrap means
+    hist(bootmean, density=70, main=paste("Histogram of Bootsample Means"),
+    border="red",col="purple", axes=TRUE) # add color and border
+    }
+
+#call bootstrap function
+bootstrap(100,100,50)
+```
+
+
+```r
+bootstrap(100,50,10)
+```
+
+
+### Normal Distribution - Two Samples:
+
+
+```r
+#create a bootstrap function
+bootstrap<- function(d,r,n){ #pass arguments d,r,n
+    group1 <- rnorm(d) #random normal distribution with #d observations
+    group2 <- rnorm(d) #random normal distribution with #d observations
+    bootmean <- numeric(r) #initialize bootmean vector 
+    #loop through "r" times and sample from "norm" with replacement "n" times
+    for(i in 1:r){
+    # subtract the each group; the difference will be normally distributed
+    boot.sample <- abs(sample(group1,n,replace=TRUE)-sample(group2,n,replace=TRUE))
+    bootmean[i] <- mean(boot.sample)
+    }
+    #create histogram of bootstrap means
+    hist(bootmean, density=70, main=paste("Histogram of Bootsample Means"),
+    border="red",col="blue", axes=TRUE)
+    }
+
+bootstrap(100,1000,100)
+```
+
+```r
+#call bootstrap function
+bootstrap(10,100,50)
+```
+
+
+### Exponential Distribution - Two Samples:
+
+
+```r
+#create a bootstrap function
+bootstrap<- function(d,r,end,n){#pass arguments d,r,n
+    group1 <- rexp(d) #random exponential distribution with #d observations
+    group2 <- rexp(d) #random exponential distribution with #d observations
+    bootmean <- numeric(r) #initialize bootmean vector 
+    #loop through "r" times and sample from "norm" with replacement "n" times
+    for(i in 1:r){
+    #subtract difference
+    boot.sample <- abs(sample(group1,n,replace=TRUE)-sample(group2,n,replace=TRUE))
+    bootmean[i] <- mean(boot.sample)
+    }
+    #create histogram of bootstrap means
+    hist(bootmean, density=70, main=paste("Histogram of Bootsample Means"),
+    border="red",col="purple", axes=TRUE)
+    }
+
+#call bootstrap function
+bootstrap(100,100,50)
+```
+
+```r
+#call boostrap function
+bootstrap(100,50,10)
+```
+
