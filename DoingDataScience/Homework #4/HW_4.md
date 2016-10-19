@@ -1,19 +1,13 @@
----
-title: "Doing Data Science"
-output:
-  html_document:
-    keep_md: true
----
+# Doing Data Science
 *Trace Smith*
 *Homework #4*
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ##### Normal Distribution - One Sample:
 
-```{r, echo=TRUE}
+
+```r
 #create a bootstrap function
 bootstrap1<- function(d,r,n){ #pass arguments d,r,n
   norm <- rnorm(d) #random normal distribution with #d observations
@@ -29,20 +23,27 @@ bootstrap1<- function(d,r,n){ #pass arguments d,r,n
 }
 ```
 
-```{r}
+
+```r
 #call bootstrap function; passing 100 observations to generate a normal distribution
 #loop through 1000 times (1,000 different bootstraps), sample size of 50
 bootstrap1(100,1000,50)
 ```
 
-```{r}
+![](HW_4_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+
+```r
 #call bootstrap function
 bootstrap1(100,1000,10)
 ```
 
+![](HW_4_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
 ##### Exponential Distribution - One Sample:
 
-```{r}
+
+```r
 #create a bootstrap function
 bootstrap2<- function(d,r,n){ #pass arguments d,r,n
   expo <- rexp(d) #random exponential distribution with #d observations
@@ -58,18 +59,25 @@ bootstrap2<- function(d,r,n){ #pass arguments d,r,n
 }
 ```
 
-```{r}
+
+```r
 #call bootstrap function
 bootstrap2(100,100,50)
 ```
 
-```{r}
+![](HW_4_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
+
+```r
 #call bootstrap function
 bootstrap2(100,50,10)
 ```
 
+![](HW_4_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
 ##### Normal Distribution - Two Samples:
-```{r}
+
+```r
 #create a bootstrap function
 bootstrap3<- function(d,r,n){ #pass arguments d,r,n
   group1 <- rnorm(d) #random normal distribution with #d observations
@@ -86,20 +94,27 @@ bootstrap3<- function(d,r,n){ #pass arguments d,r,n
        border="red",col="blue", axes=TRUE)
 }
 ```
-```{r}
+
+```r
 #call bootstrap function
 bootstrap3(100,1000,100)
 ```
 
-```{r}
+![](HW_4_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+
+```r
 #call bootstrap function
 bootstrap3(10,100,50)
 ```
 
+![](HW_4_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
 
 ##### Exponential Distribution - Two Samples:
 
-```{r}
+
+```r
 #create a bootstrap function
 bootstrap4<- function(d,r,end,n){#pass arguments d,r,n
   group1 <- rexp(d) #random exponential distribution with #d observations
@@ -118,13 +133,19 @@ bootstrap4<- function(d,r,end,n){#pass arguments d,r,n
 ```
 
 
-```{r}
+
+```r
 #call bootstrap function
 bootstrap4(100,100,50)
 ```
 
+![](HW_4_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
-```{r}
+
+
+```r
 #call boostrap function
 bootstrap4(100,50,10)
 ```
+
+![](HW_4_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
