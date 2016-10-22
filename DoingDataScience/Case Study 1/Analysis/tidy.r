@@ -65,7 +65,7 @@ colnames(gdp)[4] <- "GDP"
 # gsub command to replace them with a blank space
 # convert variables to numeric 
 gdp$GDP <- as.numeric(gsub("[^[:digit:]]","", gdp$GDP))
-gdp$Rank <- as.numeric(gsub("[^[:digit:]]","", gdp$Ranking))
+gdp$Ranking <- as.numeric(gsub("[^[:digit:]]","", gdp$Ranking))
 
 #Check everything looks correct:
 head(gdp,5)

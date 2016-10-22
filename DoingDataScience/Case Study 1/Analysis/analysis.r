@@ -13,7 +13,7 @@ sort.gdp <-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last 
 sort.gdp[,c("Long.Name","Ranking","GDP")]
 
 #Question:3 Avg. GDP Ranking Group By Income.Group
-merge.data.agg <- ddply(merge.data.final, .(Income.Group), summarize,  Rank=mean(Rank))
+merge.data.agg <- ddply(merge.data.final, .(Income.Group), summarize,  Ranking=mean(Ranking))
 #merge.data.agg <-merge.data.agg[!(is.na(merge.data.agg$Rank) | merge.data.agg$Rank==""), ]
 head(merge.data.agg,5)
 
