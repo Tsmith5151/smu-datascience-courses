@@ -2,7 +2,9 @@
 title: "Case Study 1"
 author: "Trace Smith"
 date: "November 4, 2016"
-output: html_document
+output:
+  html_document:
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
