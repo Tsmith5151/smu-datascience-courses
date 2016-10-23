@@ -101,7 +101,7 @@ dim(gdp.raw)
 ```{r}
 #Assign Raw Data to "gdp"
 gdp <-gdp.raw
-knitr::kable(head(gdp,5))
+head(gdp,5)
 ```
 
 - Next, there a total of 6 columns with missing data (for every observation), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
@@ -146,14 +146,14 @@ gdp$Ranking <- as.numeric(gsub("[^[:digit:]]","", gdp$Ranking))
 
 ```{r}
 #Check everything looks correct:
-knitr::kable(head(gdp,5))
+head(gdp,5)
 ```
 
 - Before removing any rows containing `NA` for the "Ranking" column, the code below will count the total number of NA observations per each column.
 
 ```{r}
 #The number of N/A per column
-knitr::kable(head(colSums(is.na(gdp))))
+head(colSums(is.na(gdp)))
 ```
 
 #### *Educational Data Set*
@@ -178,7 +178,7 @@ dim(fedstats.raw)
 
 ```{r}
 #The number of N/A per column
-knitr::kable(colSums(is.na(fedstats)))
+colSums(is.na(fedstats))
 ```
 
 
@@ -193,7 +193,7 @@ fedstats[4:ncol(fedstats)] <-NULL
 A look at the first five rows of the educational data frame with each attribute is shown below. 
 ```{r}
 #Display the first 5 rows of dataframe
-knitr::kable(head(fedstats,5))
+head(fedstats,5)
 ```
 
 ### Merge Data
@@ -214,7 +214,7 @@ merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")
 ```{r}
 #Change the order of the columns:
 merge.gdp.fedstats <-merge.gdp.fedstats[c(1,3,5,4,6,2)]
-knitr::kable(head(merge.gdp.fedstats,5))
+head(merge.gdp.fedstats,5)
 ```
 
 - Note that the answers to the analysis questions in the following section is based on removing the each observation with NA in the "Ranking" column. Thus, the **merge.data.final** data frame will be referenced in the `analysis.r` file.
@@ -233,7 +233,7 @@ merge.data.final<-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]
 
 ```{r}
 #Display the first 5 rows of dataframe
-knitr::kable(head(merge.data.final,5))
+head(merge.data.final,5)
 ```
 
 
@@ -269,7 +269,7 @@ dim(merge.data.final)
 ```{r}
 #Sort merged data frame by ascending order
 sort.gdp <-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last = TRUE),][12:13,] # select rows 12-13 and all columns (tie between rankings)
-knitr::kable(sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")])
+sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")]
 ```
 
 **Question #3: What are the average GDP rankings for the "High income: OECD" and "High income: nonOECD" groups?**
@@ -279,7 +279,7 @@ knitr::kable(sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")])
 ```{r}
 #Aggregrate data frame by Income.Group and take the mean rankings
 merge.data.agg <- ddply(merge.data.final, .(Income.Group), summarize,  Ranking=mean(Ranking))
-knitr::kable(head(merge.data.agg,5)) #knit table
+head(merge.data.agg,5)
 ```
 
 **Question #4: Plot the GDP for all of the countries. Use ggplot2 to color your plot by Income Group.**
@@ -303,7 +303,7 @@ merge.data.final$Ranking <- as.numeric(as.character(merge.data.final$Ranking))
 merge.data.final$Group <- cut(merge.data.final$Ranking,breaks=5)
 #take the quantiles and income.group from the merge data file and create a table
 quant.table<-table(merge.data.final$Income.Group, merge.data.final$Group)
-knitr::kable(quant.table) #knit into table format to display in md
+quant.table
 ```
 
 ### Conclusion
