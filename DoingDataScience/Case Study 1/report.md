@@ -332,7 +332,7 @@ print(paste0("Total Number of ID Matches: ",
 ## [1] "Total Number of ID Matches: 210"
 ```
 
-- The total number of mataches ater removing the NA's in the "Ranking" column in the "merge.data.final" data frame.
+- The total number of matches after removing the NA's in the "Ranking" column in the "merge.data.final" data frame.
 
 
 ```r
@@ -420,4 +420,4 @@ Upper middle income               11             9            8           8     
 
 ### Conclusion
 
-- In summary, this primary objective of this work is to take unstructured data files, tidy up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to recieve perfectly formatted data. Data comes in all forms and often the time it is very messy. The workflow discussed in this Case Study is a practical example of writing several scripts in R to clean a messy data set before performing any statistical analysis. 
+- In summary, this primary objective of this work is to take unstructured data files, tidy up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data. Data comes in all forms and often the time it is very messy. The workflow discussed in this Case Study is a practical example of writing several scripts in R to clean a messy data set before performing any statistical analysis. 
