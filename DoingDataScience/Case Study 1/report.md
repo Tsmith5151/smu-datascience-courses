@@ -18,10 +18,9 @@ nonOECD" groups?
   6. How many countries are Lower middle income but among the 38 nations with highest
 GDP?
 
-
 ### R Packages
 
-- The listed R packages below are required to execute the source code. If these packages are not installed, you can install the packages by `install.packages("name") in the R console.
+- The listed R packages below are required to execute the source code. If these packages are not installed, you can install the packages by `install.packages("name")` in the R console.
 
 
 ```r
@@ -73,7 +72,9 @@ download(url,destfile="Data/FGDP.raw.csv")
 
 #### *Gross Domestic Product Data*
 
-**Explore the Data** In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's briefly look at the raw data. First, the downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
+##### Explore the Data:
+
+- In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's briefly look at the raw data. First, the downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
 
 
 ```r
@@ -91,9 +92,9 @@ dim(gdp.raw)
 ## [1] 327  10
 ```
 
-**Data Cleaning:** Before making any changes to the raw data set, let's assign the raw data to `gdp` in order to preserve the initial data set. 
+##### Data Cleaning:  
 
-- Next, there a total of 6 columns with missing data (for every observation), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
+- Before making any changes to the raw data set, let's assign the raw data to `gdp` in order to preserve the initial data set. 
 
 
 ```r
@@ -112,20 +113,19 @@ CHN   2         NA    China           8,227,103           NA    NA    NA    NA
 JPN   3         NA    Japan           5,959,718           NA    NA    NA    NA  
 DEU   4         NA    Germany         3,428,131           NA    NA    NA    NA  
 
+- Next, there a total of 6 columns with missing data (for every observation), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
+
 
 ```r
 #Drop Columns
 gdp[6:10] <-NULL
 gdp[[3]] <- NULL
+#List the header name for each column
+names(gdp)
 ```
 
-- Examining the raw data set using the following function, `str(gdp.raw)`, it was noticed that rows 217 and beyond were irrelevant to the analysis (i.e. contained unstructured text information and world GDP statistics) and therefore was excluded from the data frame. 
-
-
-```r
-#Select Certain row and all columns; 
-#not including the section of text below the data and world GDP info
-gdp<-gdp[(2:216),] #select rows 2:215 and all columns (,)
+```
+## [1] "X"           "Ranking"     "Economy"     "US.dollars."
 ```
 
 - As shown above in the code block that prints out each column name, the first column is labeled "X1" is actually the "CountryCode", therefore the column will be renamed accordingly. Likewise, the "US.dollars." column of the raw data set will also be renamed to "GDP". 
@@ -135,6 +135,21 @@ gdp<-gdp[(2:216),] #select rows 2:215 and all columns (,)
 #Rename Column
 colnames(gdp)[1] <- "CountryCode"
 colnames(gdp)[4] <- "GDP"
+#List the header name for each column
+names(gdp)
+```
+
+```
+## [1] "CountryCode" "Ranking"     "Economy"     "GDP"
+```
+
+- Examining the raw data set using the following function, `str(gdp.raw)`, it was noticed that rows 217 and beyond were irrelevant to the analysis (i.e. contained unstructured text information and world GDP statistics) and therefore was excluded from the data frame. 
+
+
+```r
+#Select Certain row and all columns; 
+#not including the section of text below the data and world GDP info
+gdp<-gdp[(2:216),] #select rows 2:215 and all columns (,)
 ```
 
 - Columns "Ranking" and "GDP" are both factors and will need to be converted to numeric values in order to perform numerical calculations or any type of analysis. The script to convert these columns to numeric is shown below:
@@ -183,16 +198,14 @@ GDP            25
 
 #### *Educational Data Set*
 
-**Explore the Data** Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new data frame "fedstats". The dimensions of the data file and the column headers are shown below. 
+#####Explore the Data:
+
+- Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new data frame "fedstats". The dimensions of the data file and the column headers are shown below. 
 
 
 ```r
 #Read FEDSTATS Dataset into datframe
 fedstats.raw <- read.csv("Data/FEDSTATS_Country.raw.csv",header=TRUE)
-```
-
-
-```r
 #Create New DataFrame From Raw
 fedstats<-fedstats.raw
 ```
@@ -252,8 +265,16 @@ Short.Name                                             0
 --------------------------------------------------  ----
 
 
-**Data Cleaning:** For this data set, there were no necessary tidying procedures performed. The columns of interest (i.e. CountryCode, Income.Group, GDP, and Long.Name") were in the correct format. A look at the first five rows of the educational data frame with each attribute is shown below. 
+##### Data Cleaning: 
+- For this data set, there were no necessary tidying procedures performed. However, given that the primary columns of interest are "CountryCode", "Long.Name", and "Income.Group", the remaining attributes will be dropped from the data frame. 
 
+
+```r
+#Drop column index 4 thru the number of columns in the df
+fedstats[4:ncol(fedstats)] <-NULL
+```
+
+A look at the first five rows of the educational data frame with each attribute is shown below. 
 
 ```r
 #Display the first 5 rows of dataframe
@@ -262,13 +283,13 @@ knitr::kable(head(fedstats,5))
 
 
 
-CountryCode   Long.Name                      Income.Group           Region                      Lending.category   Other.groups   Currency.Unit    Latest.population.census   Latest.household.survey    Special.Notes                                                                 National.accounts.base.year    National.accounts.reference.year   System.of.National.Accounts  SNA.price.valuation   Alternative.conversion.factor    PPP.survey.year  Balance.of.Payments.Manual.in.use   External.debt.Reporting.status   System.of.trade   Government.Accounting.concept   IMF.data.dissemination.standard   Source.of.most.recent.Income.and.expenditure.data   Vital.registration.complete   Latest.agricultural.census    Latest.industrial.data   Latest.trade.data   Latest.water.withdrawal.data  X2.alpha.code   WB.2.code   Table.Name    Short.Name  
-------------  -----------------------------  ---------------------  --------------------------  -----------------  -------------  ---------------  -------------------------  -------------------------  ----------------------------------------------------------------------------  ----------------------------  ---------------------------------  ----------------------------  --------------------  ------------------------------  ----------------  ----------------------------------  -------------------------------  ----------------  ------------------------------  --------------------------------  --------------------------------------------------  ----------------------------  ---------------------------  -----------------------  ------------------  -----------------------------  --------------  ----------  ------------  ------------
-ABW           Aruba                          High income: nonOECD   Latin America & Caribbean                                     Aruban florin    2000                                                                                                                                1995                                                         NA                            NA                                                                      NA                                                                       Special                                                                                                                                                                                                                 NA                2008                             NA  AW              AW          Aruba         Aruba       
-ADO           Principality of Andorra        High income: nonOECD   Europe & Central Asia                                         Euro             Register based                                                                                                                                                                                   NA                            NA                                                                      NA                                                                       General                                                                                                                                 Yes                                                                             NA                2006                             NA  AD              AD          Andorra       Andorra     
-AFG           Islamic State of Afghanistan   Low income             South Asia                  IDA                HIPC           Afghan afghani   1979                       MICS, 2003                 Fiscal year end: March 20; reporting period for national accounts data: FY.   2002/2003                                                    NA                            NA  VAB                                                                 NA                                      Actual                           General           Consolidated                    GDDS                                                                                                                                                                  NA                2008                           2000  AF              AF          Afghanistan   Afghanistan 
-AGO           People's Republic of Angola    Lower middle income    Sub-Saharan Africa          IDA                               Angolan kwanza   1970                       MICS, 2001, MIS, 2006/07                                                                                 1997                                                         NA                            NA  VAP                   1991-96                                     2005  BPM5                                Actual                           Special                                           GDDS                              IHS, 2000                                                                         1964-65                                           NA                1991                           2000  AO              AO          Angola        Angola      
-ALB           Republic of Albania            Upper middle income    Europe & Central Asia       IBRD                              Albanian lek     2001                       MICS, 2005                                                                                                                                                          1996                          1993  VAB                                                               2005  BPM5                                Actual                           General           Consolidated                    GDDS                              LSMS, 2005                                          Yes                           1998                                            2005                2008                           2000  AL              AL          Albania       Albania     
+CountryCode   Long.Name                      Income.Group         
+------------  -----------------------------  ---------------------
+ABW           Aruba                          High income: nonOECD 
+ADO           Principality of Andorra        High income: nonOECD 
+AFG           Islamic State of Afghanistan   Low income           
+AGO           People's Republic of Angola    Lower middle income  
+ALB           Republic of Albania            Upper middle income  
 
 ### Merge Data
 
@@ -281,6 +302,25 @@ ALB           Republic of Albania            Upper middle income    Europe & Cen
 #merge data on country shortcode
 merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")
 ```
+
+- The initial column indexes are from 1:6, however for interpretability purposes, the position of these columns have been re-ordered accordingly: 
+
+
+```r
+#Change the order of the columns:
+merge.gdp.fedstats <-merge.gdp.fedstats[c(1,3,5,4,6,2)]
+knitr::kable(head(merge.gdp.fedstats,5))
+```
+
+
+
+CountryCode   Economy       Long.Name                          GDP  Income.Group            Ranking
+------------  ------------  -----------------------------  -------  ---------------------  --------
+ABW           Aruba         Aruba                             2584  High income: nonOECD        161
+ADO           Andorra       Principality of Andorra             NA  High income: nonOECD         NA
+AFG           Afghanistan   Islamic State of Afghanistan     20497  Low income                  105
+AGO           Angola        People's Republic of Angola     114147  Lower middle income          60
+ALB           Albania       Republic of Albania              12648  Upper middle income         125
 
 - Note that the answers to the analysis questions in the following section is based on removing the each observation with NA in the "Ranking" column. Thus, the **merge.data.final** data frame will be referenced in the `analysis.r` file.
 
@@ -298,18 +338,19 @@ merge.data.final<-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]
 
 ##### Final Merged Data Frame 
 
+
 ```r
 #Display the first 5 rows of dataframe
 knitr::kable(head(merge.data.final,5))
 ```
 
-     CountryCode    Ranking  Economy                    GDP  Long.Name                      Income.Group           Region                       Lending.category   Other.groups   Currency.Unit    Latest.population.census   Latest.household.survey    Special.Notes                                                                 National.accounts.base.year    National.accounts.reference.year   System.of.National.Accounts  SNA.price.valuation   Alternative.conversion.factor    PPP.survey.year  Balance.of.Payments.Manual.in.use   External.debt.Reporting.status   System.of.trade   Government.Accounting.concept   IMF.data.dissemination.standard   Source.of.most.recent.Income.and.expenditure.data   Vital.registration.complete   Latest.agricultural.census    Latest.industrial.data   Latest.trade.data   Latest.water.withdrawal.data  X2.alpha.code   WB.2.code   Table.Name             Short.Name           
----  ------------  --------  ---------------------  -------  -----------------------------  ---------------------  ---------------------------  -----------------  -------------  ---------------  -------------------------  -------------------------  ----------------------------------------------------------------------------  ----------------------------  ---------------------------------  ----------------------------  --------------------  ------------------------------  ----------------  ----------------------------------  -------------------------------  ----------------  ------------------------------  --------------------------------  --------------------------------------------------  ----------------------------  ---------------------------  -----------------------  ------------------  -----------------------------  --------------  ----------  ---------------------  ---------------------
-1    ABW                161  Aruba                     2584  Aruba                          High income: nonOECD   Latin America & Caribbean    NA                 NA             Aruban florin    2000                       NA                         NA                                                                            1995                                                         NA                            NA  NA                    NA                                            NA  NA                                  NA                               Special           NA                              NA                                NA                                                  NA                            NA                                                NA                2008                             NA  AW              AW          Aruba                  Aruba                
-3    AFG                105  Afghanistan              20497  Islamic State of Afghanistan   Low income             South Asia                   IDA                HIPC           Afghan afghani   1979                       MICS, 2003                 Fiscal year end: March 20; reporting period for national accounts data: FY.   2002/2003                                                    NA                            NA  VAB                   NA                                            NA  NA                                  Actual                           General           Consolidated                    GDDS                              NA                                                  NA                            NA                                                NA                2008                           2000  AF              AF          Afghanistan            Afghanistan          
-4    AGO                 60  Angola                  114147  People's Republic of Angola    Lower middle income    Sub-Saharan Africa           IDA                NA             Angolan kwanza   1970                       MICS, 2001, MIS, 2006/07   NA                                                                            1997                                                         NA                            NA  VAP                   1991-96                                     2005  BPM5                                Actual                           Special           NA                              GDDS                              IHS, 2000                                           NA                            1964-65                                           NA                1991                           2000  AO              AO          Angola                 Angola               
-5    ALB                125  Albania                  12648  Republic of Albania            Upper middle income    Europe & Central Asia        IBRD               NA             Albanian lek     2001                       MICS, 2005                 NA                                                                            NA                                                         1996                          1993  VAB                   NA                                          2005  BPM5                                Actual                           General           Consolidated                    GDDS                              LSMS, 2005                                          Yes                           1998                                            2005                2008                           2000  AL              AL          Albania                Albania              
-6    ARE                 32  United Arab Emirates    348595  United Arab Emirates           High income: nonOECD   Middle East & North Africa   NA                 NA             U.A.E. dirham    2005                       NA                         NA                                                                            1995                                                         NA                            NA  VAB                   NA                                            NA  BPM4                                NA                               General           Consolidated                    GDDS                              NA                                                  NA                            1998                                              NA                2008                           2005  AE              AE          United Arab Emirates   United Arab Emirates 
+     CountryCode   Economy                Long.Name                          GDP  Income.Group            Ranking
+---  ------------  ---------------------  -----------------------------  -------  ---------------------  --------
+1    ABW           Aruba                  Aruba                             2584  High income: nonOECD        161
+3    AFG           Afghanistan            Islamic State of Afghanistan     20497  Low income                  105
+4    AGO           Angola                 People's Republic of Angola     114147  Lower middle income          60
+5    ALB           Albania                Republic of Albania              12648  Upper middle income         125
+6    ARE           United Arab Emirates   United Arab Emirates            348595  High income: nonOECD         32
 
 
 ### Statistical Analysis
@@ -341,7 +382,7 @@ dim(merge.data.final)
 ```
 
 ```
-## [1] 189  35
+## [1] 189   7
 ```
 
 **Question #2: Sort the data frame in ascending order by GDP (so United States is last). What is the 13th country in the resulting data frame?**
@@ -392,7 +433,7 @@ p+labs(title="GDP vs Income Group", # add title
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) #adjust the x-axis labels (rotate)
 ```
 
-![](report_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
 **Question #5: Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. How many countries are Lower middle income but among the 38 nations with highest GDP?**
 
@@ -421,3 +462,7 @@ Upper middle income               11             9            8           8     
 ### Conclusion
 
 - In summary, this primary objective of this work is to take unstructured data files, tidy up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data. Data comes in all forms and often the time it is very messy. The workflow discussed in this Case Study is a practical example of writing several scripts in R to clean a messy data set before performing any statistical analysis. 
+
+
+### Reference:
+Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: [Link](https://student.unsw.edu.au/writing-case-study)

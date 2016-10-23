@@ -3,6 +3,9 @@ source("Analysis/tidy.r") #Read r code from analysis1.r
 #merge data on country shortcode
 merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")
 
+#Change the order of the columns:
+merge.gdp.fedstats <-merge.gdp.fedstats[c(1,3,5,4,6,2)]
+
 #replace any blank observations with N/A
 merge.gdp.fedstats[merge.gdp.fedstats == ""] <- NA
 

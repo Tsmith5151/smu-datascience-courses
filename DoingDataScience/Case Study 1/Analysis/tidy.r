@@ -27,6 +27,9 @@ dim(fedstats.raw)
 #Create New DataFrame From Raw
 fedstats<-fedstats.raw
 
+#Drop column index 4 thru the number of columns in the df
+fedstats[4:ncol(fedstats)] <-NULL
+
 #Display the first 5 rows of dataframe
 head(fedstats,5)
 

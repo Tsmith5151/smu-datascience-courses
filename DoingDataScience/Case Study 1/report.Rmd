@@ -4,7 +4,7 @@ author: "Trace Smith"
 date: "November 4, 2016"
 output:
   html_document:
-    keep_md: true
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -25,10 +25,9 @@ nonOECD" groups?
   6. How many countries are Lower middle income but among the 38 nations with highest
 GDP?
 
-
 ### R Packages
 
-- The listed R packages below are required to execute the source code. If these packages are not installed, you can install the packages by `install.packages("name") in the R console.
+- The listed R packages below are required to execute the source code. If these packages are not installed, you can install the packages by `install.packages("name")` in the R console.
 
 ```{r}
 library(plyr)
@@ -81,7 +80,9 @@ source("Analysis/tidy.r")
 
 #### *Gross Domestic Product Data*
 
-**Explore the Data** In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's briefly look at the raw data. First, the downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
+##### Explore the Data:
+
+- In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's briefly look at the raw data. First, the downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
 
 ```{r}
 #Read GDP Dataset into dataframe
@@ -93,9 +94,9 @@ gdp.raw <- read.csv("Data/FGDP.raw.csv",header=TRUE,skip=3)
 dim(gdp.raw)
 ```
 
-**Data Cleaning:** Before making any changes to the raw data set, let's assign the raw data to `gdp` in order to preserve the initial data set. 
+##### Data Cleaning:  
 
-- Next, there a total of 6 columns with missing data (for every observation), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
+- Before making any changes to the raw data set, let's assign the raw data to `gdp` in order to preserve the initial data set. 
 
 ```{r}
 #Assign Raw Data to "gdp"
@@ -103,18 +104,14 @@ gdp <-gdp.raw
 knitr::kable(head(gdp,5))
 ```
 
+- Next, there a total of 6 columns with missing data (for every observation), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
+
 ```{r}
 #Drop Columns
 gdp[6:10] <-NULL
 gdp[[3]] <- NULL
-```
-
-- Examining the raw data set using the following function, `str(gdp.raw)`, it was noticed that rows 217 and beyond were irrelevant to the analysis (i.e. contained unstructured text information and world GDP statistics) and therefore was excluded from the data frame. 
-
-```{r}
-#Select Certain row and all columns; 
-#not including the section of text below the data and world GDP info
-gdp<-gdp[(2:216),] #select rows 2:215 and all columns (,)
+#List the header name for each column
+names(gdp)
 ```
 
 - As shown above in the code block that prints out each column name, the first column is labeled "X1" is actually the "CountryCode", therefore the column will be renamed accordingly. Likewise, the "US.dollars." column of the raw data set will also be renamed to "GDP". 
@@ -123,6 +120,16 @@ gdp<-gdp[(2:216),] #select rows 2:215 and all columns (,)
 #Rename Column
 colnames(gdp)[1] <- "CountryCode"
 colnames(gdp)[4] <- "GDP"
+#List the header name for each column
+names(gdp)
+```
+
+- Examining the raw data set using the following function, `str(gdp.raw)`, it was noticed that rows 217 and beyond were irrelevant to the analysis (i.e. contained unstructured text information and world GDP statistics) and therefore was excluded from the data frame. 
+
+```{r}
+#Select Certain row and all columns; 
+#not including the section of text below the data and world GDP info
+gdp<-gdp[(2:216),] #select rows 2:215 and all columns (,)
 ```
 
 - Columns "Ranking" and "GDP" are both factors and will need to be converted to numeric values in order to perform numerical calculations or any type of analysis. The script to convert these columns to numeric is shown below:
@@ -151,14 +158,13 @@ knitr::kable(head(colSums(is.na(gdp))))
 
 #### *Educational Data Set*
 
-**Explore the Data** Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new data frame "fedstats". The dimensions of the data file and the column headers are shown below. 
+#####Explore the Data:
+
+- Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new data frame "fedstats". The dimensions of the data file and the column headers are shown below. 
 
 ```{r}
 #Read FEDSTATS Dataset into datframe
 fedstats.raw <- read.csv("Data/FEDSTATS_Country.raw.csv",header=TRUE)
-```
-
-```{r}
 #Create New DataFrame From Raw
 fedstats<-fedstats.raw
 ```
@@ -176,8 +182,15 @@ knitr::kable(colSums(is.na(fedstats)))
 ```
 
 
-**Data Cleaning:** For this data set, there were no necessary tidying procedures performed. The columns of interest (i.e. CountryCode, Income.Group, GDP, and Long.Name") were in the correct format. A look at the first five rows of the educational data frame with each attribute is shown below. 
+##### Data Cleaning: 
+- For this data set, there were no necessary tidying procedures performed. However, given that the primary columns of interest are "CountryCode", "Long.Name", and "Income.Group", the remaining attributes will be dropped from the data frame. 
 
+```{r}
+#Drop column index 4 thru the number of columns in the df
+fedstats[4:ncol(fedstats)] <-NULL
+```
+
+A look at the first five rows of the educational data frame with each attribute is shown below. 
 ```{r}
 #Display the first 5 rows of dataframe
 knitr::kable(head(fedstats,5))
@@ -196,6 +209,14 @@ source("Analysis/tidy.r") #Read r code from analysis1.r
 merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")
 ```
 
+- The initial column indexes are from 1:6, however for interpretability purposes, the position of these columns have been re-ordered accordingly: 
+
+```{r}
+#Change the order of the columns:
+merge.gdp.fedstats <-merge.gdp.fedstats[c(1,3,5,4,6,2)]
+knitr::kable(head(merge.gdp.fedstats,5))
+```
+
 - Note that the answers to the analysis questions in the following section is based on removing the each observation with NA in the "Ranking" column. Thus, the **merge.data.final** data frame will be referenced in the `analysis.r` file.
 
 ```{r}
@@ -209,6 +230,7 @@ merge.data.final<-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]
 ```
 
 ##### Final Merged Data Frame 
+
 ```{r}
 #Display the first 5 rows of dataframe
 knitr::kable(head(merge.data.final,5))
@@ -287,3 +309,7 @@ knitr::kable(quant.table) #knit into table format to display in md
 ### Conclusion
 
 - In summary, this primary objective of this work is to take unstructured data files, tidy up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data. Data comes in all forms and often the time it is very messy. The workflow discussed in this Case Study is a practical example of writing several scripts in R to clean a messy data set before performing any statistical analysis. 
+
+
+### Reference:
+Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: [Link](https://student.unsw.edu.au/writing-case-study)
