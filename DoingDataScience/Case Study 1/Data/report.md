@@ -35,20 +35,31 @@ library(downloader)
 
 
 ```r
-dir <- "/Users/tracesmith/Desktop/SMU/Github/DoingDataScience/Case Study 1"
+dir <- "/Users/tracesmith/Desktop/SMU/Github/DoingDataScience/Case Study 1/Data"
 setwd(dir)
+```
+
+### Run Source Code
+
+- In the Analysis directory, the source code to execute the gathering of data, data cleansing, merging the data, and code to analyze the data can be executed by the running `analysis.r`. Using the `source` function, the R files are linked together and thus can be run all at once via the `analysis.r` file.
+
+
+```r
+#Read R code from analysis.r -- linked to gather, tidy, merge, and analysis 
+#Can execute the entire R script from the code below:
+source("../Analysis/analysis.r")
 ```
 
 ### Downloading the Dataset:
 
-- There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that `destfile` refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the root directory: `Case Study 1`.
+- There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that `destfile` refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the root directory: `Case Study 1/Data`. The source code for gathering the data can be found in the `gather.r` file. 
 
 
 
 ```r
 #Download Data GDP Ranking:
 url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
-download(url,destfile="Data/FEDSTATS_Country.raw.csv") #download file and save it to Data directory
+download(url,destfile="FEDSTATS_Country.raw.csv") #download file and save it to Data directory
 ```
 
 
@@ -56,19 +67,15 @@ download(url,destfile="Data/FEDSTATS_Country.raw.csv") #download file and save i
 ```r
 #Download Educational Data
 url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
-download(url,destfile="Data/FGDP.raw.csv")
+download(url,destfile="FGDP.raw.csv")
 ```
-
 
 
 - The second option is to download the file directly from [`The World Bank`](http://www.worldbank.org/) website directly and then move the file from the download directory to the "Data" directory (i.e. a sub-directory of "Case Study 1").
 
-
 ### Tyding the Data
 
 - The following code blocks will walk through the R code utilized to clean up the messy data for each data frame. As a note here, the NA's will not be removed during the cleaning process, rather both empty observations or NA's will be removed later after merging the data together.
-
-
 
 #### *Gross Domestic Product Data*
 
@@ -79,7 +86,7 @@ download(url,destfile="Data/FGDP.raw.csv")
 
 ```r
 #Read GDP Dataset into dataframe
-gdp.raw <- read.csv("Data/FGDP.raw.csv",header=TRUE,skip=3)
+gdp.raw <- read.csv("FGDP.raw.csv",header=TRUE,skip=3)
 ```
 
 
@@ -201,7 +208,7 @@ head(colSums(is.na(gdp)))
 
 ```r
 #Read FEDSTATS Dataset into datframe
-fedstats.raw <- read.csv("Data/FEDSTATS_Country.raw.csv",header=TRUE)
+fedstats.raw <- read.csv("FEDSTATS_Country.raw.csv",header=TRUE)
 #Create New DataFrame From Raw
 fedstats<-fedstats.raw
 ```
@@ -320,8 +327,6 @@ head(fedstats,5)
 - Now that both data frames, Gross Domestic Product and Educational data, is cleaned and ready to merge, the unique ID column that will be the key to merge the data on is "CountryCode". The merge data set will be named "merge.gdp.fedstats".
 
 
-
-
 ```r
 #merge data on country shortcode
 merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")
@@ -393,8 +398,6 @@ head(merge.data.final,5)
 
 **Question #1: Merge the data based on the country shortcode. How many of the IDs match?**
 
-
-
 - After merging the data set, the number of matches can be determined either by visually examining the number of rows in the `merge.gdp.fedstats` data frame or by simply counting the number of matches between the fedstats and gdp data frames by the unique identifier "CountryCode" using the [`intersect`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/sets.html) function shown below.
 
 
@@ -418,7 +421,7 @@ dim(merge.data.final)
 ```
 
 ```
-## [1] 189   7
+## [1] 189   6
 ```
 
 **Question #2: Sort the data frame in ascending order by GDP (so United States is last). What is the 13th country in the resulting data frame?**
@@ -469,7 +472,7 @@ p+labs(title="GDP vs Income Group", # add title
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) #adjust the x-axis labels (rotate)
 ```
 
-![](report_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-29-1.png)<!-- -->
 
 **Question #5: Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. How many countries are Lower middle income but among the 38 nations with highest GDP?**
 
@@ -510,5 +513,5 @@ quant.table
 - In summary, this primary objective of this work is to take unstructured data files, tidy up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data. Data comes in all forms and often the time it is very messy. The workflow discussed in this Case Study is a practical example of writing several scripts in R to clean a messy data set before performing any statistical analysis. 
 
 
-### Reference:
-Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: [Link](https://student.unsw.edu.au/writing-case-study)
+### Reference
+- Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: [Link](https://student.unsw.edu.au/writing-case-study)

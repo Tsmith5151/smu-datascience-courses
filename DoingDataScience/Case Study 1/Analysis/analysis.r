@@ -2,11 +2,10 @@
 ########### Questions ###################
 #########################################
 
-source("Analysis/merge.r")
+source("../Data/merge.r") #Read R code from merge.r
 
 #Question:1 Number of Matches
-print(paste0("Total Number of ID Matches: ",
-             length(intersect(fedstats$CountryCode,gdp$CountryCode))))
+length(intersect(fedstats$CountryCode,gdp$CountryCode))
 
 #Question:2 Sort GDP - Descending Order (13th Rank)
 sort.gdp <-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last = TRUE),][12:13,]

@@ -1,24 +1,10 @@
-#Load R Libraries:
-library(plyr)
-library(downloader)
-library(ggplot2)
-
-#########################################
-
-#Download Data GDP Ranking:
-url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
-download.file(url,destfile="Data/FEDSTATS_Country.raw.csv") #download file and save it to Data directory
-
-#Download Educ Data
-url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
-download.file(url,destfile="Data/FGDP.raw.csv") #download file and save it to Data directory
+source("gather.r") #Read r code from gather.r
 
 #########################################
 #Read FEDSTATS Dataset into datframe
-fedstats.raw <- read.csv("Data/FEDSTATS_Country.raw.csv",header=TRUE)
+fedstats.raw <- read.csv("FEDSTATS_Country.raw.csv",header=TRUE)
 
 #Names of Columns
-print("Column Names of fedstats.raw Dataset:")
 names(fedstats.raw)
 
 #Dimensions (row,columns)
@@ -38,14 +24,12 @@ colSums(is.na(fedstats))
 
 #########################################
 #Read GDP Dataset into dataframe
-gdp.raw <- read.csv("Data/FGDP.raw.csv",header=TRUE,skip=3)
+gdp.raw <- read.csv("FGDP.raw.csv",header=TRUE,skip=3)
 
 #Names of Columns
-print("Column Names of gdp.raw Dataset")
 names(gdp.raw)
 
 #Dimensions
-print("Total Dimensions: Rows,Columns:")
 dim(gdp.raw)
 
 #Assign Raw Data to "gdp"
