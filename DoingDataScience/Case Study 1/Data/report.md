@@ -4,9 +4,11 @@ November 4, 2016
 
 
 
-### Introduction
+<br>
 
-The objective of this work is to take two separates data files, clean up the data, merge the two data frames, and then conduct various statistical analysis on the final merged data set using R. The raw [`Gross Domestic Product Ranking Table`](http://data.worldbank.org/data-catalog/GDP-ranking-table) data set consists of 327 rows and 10 columns while the [`Education Statistics`](http://data.worldbank.org/data-catalog/ed-stats) contains 31 different features with 234 rows. Both data sets were downloaded from the world bank website and then read into separate data frames. From here, several steps were taken to tidy the data before performing a horizontal merge on the key variable "CountryCode".The source code for tidying and merging the data can be found in `tidy.r` and `merge.r`, respectively. After preprocessing the data, the ultimate goal is to be able to extract information to answer specific questions. The source code to address the following inquiries can be found in the `analysis.r`:
+### **Introduction**
+
+The objective of this work is to gather two separates data files, read both files into separate data frames, clean up the data, and then perform a horizontal merge of the two data frames. The final task is to then take the merged data and conduct various statistical analysis using R. As an overview of the raw data, the [Gross Domestic Product Ranking](http://data.worldbank.org/data-catalog/GDP-ranking-table) data set consists of 327 rows and 10 columns while the [Education Statistics](http://data.worldbank.org/data-catalog/ed-stats) contains 31 different features with 234 rows. Both data sets were downloaded from the [World Bank](http://data.worldbank.org/) website and then read into separate data frames. From here, several steps were taken to tidy the data before performing a merge on the key variable "CountryCode". After preprocessing the data, the ultimate goal is to be able to extract information to answer several specific questions. The R code to address the following inquiries can be found in the Analysis directory and the file name `analysis.r`:
 
   1. Merge the data based on the country shortcode. How many of the IDs match?
   2. Sort the data frame in ascending order by GDP (so United States is last). What is the 13th
@@ -18,30 +20,36 @@ nonOECD" groups?
   6. How many countries are Lower middle income but among the 38 nations with highest
 GDP?
 
-### R Packages
+### **R Packages**
 
 - The listed R packages below are required to execute the source code. If these packages are not installed, you can install the packages by `install.packages("name")` in the R console.
 
 
 ```r
+#Load R Library
 library(plyr)
 library(ggplot2)
 library(downloader)
 ```
 
-### Set Working Directory:
+### **Set Working Directory**
 
-**Note:** The working directory should be set to the root node, "Case Study 1":
+**Note:** The working directory should be set to: "/Case Study 1/Data":
 
 
 ```r
-dir <- "/Users/tracesmith/Desktop/SMU/Github/DoingDataScience/Case Study 1/Data"
-setwd(dir)
+dir <- "/Users/Case Study 1/Data" #file path
+setwd(dir) #set working directory
 ```
 
-### Run Source Code
+### **Run Source Code**
 
-- In the Analysis directory, the source code to execute the gathering of data, data cleansing, merging the data, and code to analyze the data can be executed by the running `analysis.r`. Using the `source` function, the R files are linked together and thus can be run all at once via the `analysis.r` file.
+- In the Analysis directory, the source code to execute the gathering of data, data cleansing, merging the data, and code to analyze the data can be executed by the running the file `analysis.r`. Using the `source` function, the R files are linked together and thus can be run all at once via the `analysis.r` file. Here is a brief summary of the files implemented in this work:
+
+- `gather.r`: downloads the data from the internet
+- `tidy.r`: takes the two data frames and cleans the rows/columns to prepare for statistical analysis
+- `merge.r`: takes the cleaned data and then merges two data frames utilizing the unique key identifier "CountryCode"
+- `analysis.r`: takes the merged data and answers the five questions as previously defined in the introduction
 
 
 ```r
@@ -50,44 +58,41 @@ setwd(dir)
 source("../Analysis/analysis.r")
 ```
 
-### Downloading the Dataset:
+### **Downloading the Dataset**
 
-- There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that `destfile` refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the root directory: `Case Study 1/Data`. The source code for gathering the data can be found in the `gather.r` file. 
-
+- There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that `destfile` refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the working directory to `Case Study 1/Data`. The source code for downloading the data from the World Bank's website and saving to the "Data"" directory can be found in the `gather.r` file and is also shown below:
 
 
 ```r
 #Download Data GDP Ranking:
-url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
+url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv" #URL to data
 download(url,destfile="FEDSTATS_Country.raw.csv") #download file and save it to Data directory
 ```
 
 
-
 ```r
-#Download Educational Data
-url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
-download(url,destfile="FGDP.raw.csv")
+#Download Educational Data:
+url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv" #URL to data
+download(url,destfile="FGDP.raw.csv") #download file and save it to Data directory
 ```
 
+- The second option is to download the file directly from [`The World Bank`](http://www.worldbank.org/) website directly and then move the file from the local download directory to the "Data" directory (i.e. a sub-directory of "Case Study 1").
 
-- The second option is to download the file directly from [`The World Bank`](http://www.worldbank.org/) website directly and then move the file from the download directory to the "Data" directory (i.e. a sub-directory of "Case Study 1").
+### **Tyding the Data**
 
-### Tyding the Data
-
-- The following code blocks will walk through the R code utilized to clean up the messy data for each data frame. As a note here, the NA's will not be removed during the cleaning process, rather both empty observations or NA's will be removed later after merging the data together.
+- The following code blocks will walk through the R code utilized to clean up the messy data for each data frame. As a note here, the NA's will not be removed during the cleaning process, rather both empty observations and all NA's will be removed in the following section when merging the data together. Let's briefly explore the two data sets below. 
 
 #### *Gross Domestic Product Data*
 
-##### Explore the Data:
-
-- In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's briefly look at the raw data. First, the downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
+**Explore the Data**: In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's examine the raw data first. The downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
 
 
 ```r
 #Read GDP Dataset into dataframe
 gdp.raw <- read.csv("FGDP.raw.csv",header=TRUE,skip=3)
 ```
+
+- The dimensions of the raw GDP data consist of 10 columns and 327 rows.
 
 
 ```r
@@ -99,9 +104,7 @@ dim(gdp.raw)
 ## [1] 327  10
 ```
 
-##### Data Cleaning:  
-
-- Before making any changes to the raw data set, let's assign the raw data to `gdp` in order to preserve the initial data set. 
+**Data Cleaning** - Before making any changes to the raw data set, let's now assign the raw data to a new object with the name `gdp` in order to preserve the raw data. 
 
 
 ```r
@@ -119,13 +122,19 @@ head(gdp,5)
 ## 5 DEU       4  NA       Germany   3,428,131       NA  NA  NA  NA
 ```
 
-- Next, there a total of 6 columns with missing data (for every observation), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
+- Next, as we can see from the output above, there are a total of 6 columns with missing data (i.e. NA), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
 
 
 ```r
 #Drop Columns
 gdp[6:10] <-NULL
 gdp[[3]] <- NULL
+```
+
+- A quick check to see if these columns have been dropped is to list out the header names for the data frame. Only 4 columns remain, thus the code worked as expected. 
+
+
+```r
 #List the header name for each column
 names(gdp)
 ```
@@ -134,13 +143,19 @@ names(gdp)
 ## [1] "X"           "Ranking"     "Economy"     "US.dollars."
 ```
 
-- As shown above in the code block that prints out each column name, the first column is labeled "X1" is actually the "CountryCode", therefore the column will be renamed accordingly. Likewise, the "US.dollars." column of the raw data set will also be renamed to "GDP". 
+- Shown above in the code block that prints out each header name, the first column is labeled "X1" but this is actually the "CountryCode"; therefore the column will be renamed accordingly. Likewise, the "US.dollars." column of the raw data set will also be renamed to "GDP", abbreviated for [Gross Domestic Product](http://www.investopedia.com/terms/g/gdp.asp).
 
 
 ```r
 #Rename Column
 colnames(gdp)[1] <- "CountryCode"
 colnames(gdp)[4] <- "GDP"
+```
+
+- Likewise as before, to verify if the header has been correctly renamed, call the `names` function:
+
+
+```r
 #List the header name for each column
 names(gdp)
 ```
@@ -158,11 +173,30 @@ names(gdp)
 gdp<-gdp[(2:216),] #select rows 2:215 and all columns (,)
 ```
 
-- Columns "Ranking" and "GDP" are both factors and will need to be converted to numeric values in order to perform numerical calculations or any type of analysis. The script to convert these columns to numeric is shown below:
+- A useful function `str()`, provides information about the structure of the data. Shown below, columns "Ranking" and "GDP" are both factors and will need to be converted to numeric values in order to perform numerical calculations or any type of analysis. 
 
 
 ```r
-# pattern "[^[:digit:]]" refers to members of the variable name that start with digits. 
+str(gdp$GDP) #structure of GDP column
+```
+
+```
+##  Factor w/ 205 levels ""," 1,008 "," 1,129 ",..: 40 178 143 100 66 63 61 58 57 16 ...
+```
+
+```r
+str(gdp$Ranking) #structure of Ranking column
+```
+
+```
+##  Factor w/ 194 levels "",".. Not available.  ",..: 3 104 115 126 137 148 159 170 181 4 ...
+```
+
+- The script to convert these columns (i.e. factors) to numeric is:
+
+
+```r
+# pattern "[^[:digit:]]" refers to members of the variable name that start with digits.
 # gsub command to replace them with a blank space
 # convert variables to numeric 
 gdp$GDP <- as.numeric(gsub("[^[:digit:]]","", gdp$GDP))
@@ -173,8 +207,8 @@ gdp$Ranking <- as.numeric(gsub("[^[:digit:]]","", gdp$Ranking))
 
 
 ```r
-#Check everything looks correct:
-head(gdp,5)
+#return the first 5 rows of the gdp data frame
+head(gdp,5) 
 ```
 
 ```
@@ -186,11 +220,11 @@ head(gdp,5)
 ## 6         FRA       5        France  2612878
 ```
 
-- Before removing any rows containing `NA` for the "Ranking" column, the code below will count the total number of NA observations per each column.
+- Note: before removing any rows containing `NA` for the "Ranking" column, the code below will count the total number of NA observations per each column.
 
 
 ```r
-#The number of N/A per column
+#return the number of columns containing NA 
 head(colSums(is.na(gdp)))
 ```
 
@@ -199,20 +233,23 @@ head(colSums(is.na(gdp)))
 ##           0          25           0          25
 ```
 
-#### *Educational Data Set*
+<br>
 
-#####Explore the Data:
+#### *Educational Data*
 
-- Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new data frame "fedstats". The dimensions of the data file and the column headers are shown below. 
+**Explore the Data**:Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object "fedstats". 
 
 
 ```r
 #Read FEDSTATS Dataset into datframe
 fedstats.raw <- read.csv("FEDSTATS_Country.raw.csv",header=TRUE)
+
 #Create New DataFrame From Raw
 fedstats<-fedstats.raw
 ```
 
+
+- The dimensions of the raw data file are 31 columns and 234 rows
 
 ```r
 #Dimensions (row,columns)
@@ -296,9 +333,9 @@ colSums(is.na(fedstats))
 ##                                                 0
 ```
 
+<br>
 
-##### Data Cleaning: 
-- For this data set, there were no necessary tidying procedures performed. However, given that the primary columns of interest are "CountryCode", "Long.Name", and "Income.Group", the remaining attributes will be dropped from the data frame. 
+**Data Cleaning** - For this data set, there were no major steps necessary to tidy up the data. Although, given that the primary columns of interest are "CountryCode", "Long.Name", and "Income.Group", the remaining attributes will be dropped from the data frame. 
 
 
 ```r
@@ -306,7 +343,8 @@ colSums(is.na(fedstats))
 fedstats[4:ncol(fedstats)] <-NULL
 ```
 
-A look at the first five rows of the educational data frame with each attribute is shown below. 
+- After dropping the respected columns, a look at the first five rows of the educational data frame is shown below. 
+
 
 ```r
 #Display the first 5 rows of dataframe
@@ -322,13 +360,15 @@ head(fedstats,5)
 ## 5         ALB          Republic of Albania  Upper middle income
 ```
 
-### Merge Data
+<br>
 
-- Now that both data frames, Gross Domestic Product and Educational data, is cleaned and ready to merge, the unique ID column that will be the key to merge the data on is "CountryCode". The merge data set will be named "merge.gdp.fedstats".
+### **Merge Data**
+
+- Now that both data frames, `Gross Domestic Product` and `Educational Data`, is cleaned and ready to merge, the unique ID column that will be used as the key to merge the data on is "CountryCode". The merged data set will be assigned to a new object called "merge.gdp.fedstats".
 
 
 ```r
-#merge data on country shortcode
+#horiztonal merge on "CountryCode"
 merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")
 ```
 
@@ -356,7 +396,7 @@ head(merge.gdp.fedstats,5)
 ## 5  Upper middle income     125
 ```
 
-- Note that the answers to the analysis questions in the following section is based on removing the each observation with NA in the "Ranking" column. Thus, the **merge.data.final** data frame will be referenced in the `analysis.r` file.
+- Note: the answers to the analysis questions in the following section is based on removing each observation with NA in the "Ranking" column. Thus, the **merge.data.final** data frame will be the source of reference in the `analysis.r` file. First, let's replace any observation that is blank with NA:
 
 
 ```r
@@ -364,13 +404,14 @@ head(merge.gdp.fedstats,5)
 merge.gdp.fedstats[merge.gdp.fedstats == ""] <- NA
 ```
 
+- Next, remove any observations in the "Ranking" column of the `merge.gdp.fedstats` data frame. 
 
 ```r
-#Remove any Rows Wth NA's
+#Remove any Rows Wth NA's; keep all columns (i.e. ",")
 merge.data.final<-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]
 ```
 
-##### Final Merged Data Frame 
+**Final Merged Data Frame** - the first five rows will be displayed of the `merge.data.final` data frame to check if everything looks correct. 
 
 
 ```r
@@ -393,17 +434,17 @@ head(merge.data.final,5)
 ## 6 High income: nonOECD      32
 ```
 
+<br>
 
 ### Statistical Analysis
 
 **Question #1: Merge the data based on the country shortcode. How many of the IDs match?**
 
-- After merging the data set, the number of matches can be determined either by visually examining the number of rows in the `merge.gdp.fedstats` data frame or by simply counting the number of matches between the fedstats and gdp data frames by the unique identifier "CountryCode" using the [`intersect`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/sets.html) function shown below.
+- After merging the data set, the number of matches can be determined either by visually examining the number of rows in the `merge.gdp.fedstats` data frame or by simply counting the number of matches between the fedstats and gdp data frames by the unique identifier "CountryCode" using the [`intersect`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/sets.html) function shown below. There is a total of 210 matches. 
 
 
 ```r
-# Counts the total mataches between fedstats and gpd when merging on 
-# CountryCode
+# Counts the total mataches between fedstats and gpd when merging on CountryCode
 print(paste0("Total Number of ID Matches: ",
              length(intersect(fedstats$CountryCode,gdp$CountryCode)))) 
 ```
@@ -412,7 +453,7 @@ print(paste0("Total Number of ID Matches: ",
 ## [1] "Total Number of ID Matches: 210"
 ```
 
-- The total number of matches after removing the NA's in the "Ranking" column in the "merge.data.final" data frame.
+- **Note:** The total number of matches after removing the NA's in the "Ranking" column of the `merge.data.final` data frame is 189. A total of 21 observations (or countries) were removed.
 
 
 ```r
@@ -426,13 +467,13 @@ dim(merge.data.final)
 
 **Question #2: Sort the data frame in ascending order by GDP (so United States is last). What is the 13th country in the resulting data frame?**
 
-- The 13th ranked country (in ascending order) of the GDP ranking is shown below:
+- The 13th ranked country (in ascending order) of the GDP ranking is Grenada. From the output below, there are actually two countries that are tied for 13th. The other country is St. Kitts and Nevis.
 
 
 ```r
 #Sort merged data frame by ascending order
 sort.gdp <-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last = TRUE),][12:13,] # select rows 12-13 and all columns (tie between rankings)
-sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")]
+sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")] #only display the identified columns
 ```
 
 ```
@@ -443,13 +484,17 @@ sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")]
 
 **Question #3: What are the average GDP rankings for the "High income: OECD" and "High income: nonOECD" groups?**
 
-- For this question, the merged data set was grouped by "Income.Group" and then the average of the "Ranking" column was taken for the respected groups. The first five rows of the aggregated data frame are shown below:
+- For this question, the merged data set was grouped by "Income.Group" and then the average of the "Ranking" column was taken for the respected groups. All five income groups and the corresponding average rank of the aggregated data frame are shown in the code output below. 
+ 
+    *Average Ranking per Income Group:* 
+  - High income:OECD = 32.97
+  - High income:nonOECD = 91.91 
 
 
 ```r
 #Aggregrate data frame by Income.Group and take the mean rankings
 merge.data.agg <- ddply(merge.data.final, .(Income.Group), summarize,  Ranking=mean(Ranking))
-head(merge.data.agg,5)
+merge.data.agg
 ```
 
 ```
@@ -463,6 +508,8 @@ head(merge.data.agg,5)
 
 **Question #4: Plot the GDP for all of the countries. Use ggplot2 to color your plot by Income Group.**
 
+- The Gross Domestic Product vs Income Group scatter plot is generated from the below code block. One observation drawn from this scatter plot is that the within group standard deviation is the greatest for the lower middle income and upper middle income groups. 
+
 
 ```r
 #Create a scatter plot using ggplot2 to plot Income.Group vs GDP (merged data frame)
@@ -472,11 +519,11 @@ p+labs(title="GDP vs Income Group", # add title
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) #adjust the x-axis labels (rotate)
 ```
 
-![](report_files/figure-html/unnamed-chunk-29-1.png)<!-- -->
+![](report_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
 **Question #5: Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. How many countries are Lower middle income but among the 38 nations with highest GDP?**
 
-- The cut function divides a numeric vector in different ranges. The total number of break points to apply to the "merge.data.final$Ranking" column is 5, which represents the different quantiles. The quantile ranges associated with each "merge.data.final$Income.Group" is listed in the table below.
+- The cut function divides a numeric vector into different ranges. The total number of break points to apply on the `merge.data.final$Ranking` column is 5, which represents the different quantiles. The quantile ranges associated with each "Income.Group" is listed in the table below.
 
 
 ```r
@@ -510,8 +557,9 @@ quant.table
 
 ### Conclusion
 
-- In summary, this primary objective of this work is to take unstructured data files, tidy up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data. Data comes in all forms and often the time it is very messy. The workflow discussed in this Case Study is a practical example of writing several scripts in R to clean a messy data set before performing any statistical analysis. 
+- In summary, this primary objective of this work is to take unstructured data files, tidy/clean up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data and thus a large percentage of work will be cleaning up messy data sets before processing it. This work walks through a practical example of writing several scripts in R to clean a messy data set before performing any interpretations on the data.
 
+<br>
 
 ### Reference
 - Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: [Link](https://student.unsw.edu.au/writing-case-study)
