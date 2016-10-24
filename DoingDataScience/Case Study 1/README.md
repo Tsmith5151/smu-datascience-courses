@@ -28,5 +28,14 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv
 - Clear answers to the questions identified above
 - Conclusion to the project. Summary of the findings from this exercise.
 
+#### File Structure
+ The main source code can be executed from the Analysis directory by running [analysis.r](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Analysis/analysis.r). This file performs several analysis on the clean data set and is linked to other R files as follow:
+ 
+ - [gather.r](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Data/gather.r): downloads the data from the internet
+ 
+ - [tidy.r](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Data/tidy.r): takes the two data frames and cleans the rows/columns to prepare for statistical analysis
+ 
+ - [merge.r](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Data/merge.r): merges two data frames utilizing the unique key identifier "CountryCode"
+
 ### Reference:
 Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: https://student.unsw.edu.au/writing-case-study
