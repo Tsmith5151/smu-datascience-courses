@@ -1,11 +1,13 @@
 ---
 title: "Case Study 1"
-subtitle: "Analyzing the GDP of The Top 190 Countries"
 author: "Trace Smith"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
+date: "November 4, 2016"
 output:
+  word_document: default
+  pdf_document: default
   html_document:
     keep_md: yes
+subtitle: Analyzing the GDP of The Top 190 Countries
 ---
 
 ```{r setup, include=FALSE}
