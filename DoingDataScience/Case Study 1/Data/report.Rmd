@@ -1,7 +1,8 @@
 ---
 title: "Case Study 1"
+subtitle: "Analyzing the GDP of The Top 190 Countries"
 author: "Trace Smith"
-date: "November 4, 2016"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   html_document:
     keep_md: yes
@@ -64,7 +65,9 @@ source("../Analysis/analysis.r")
 
 ### **Downloading the Dataset**
 
-- There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that `destfile` refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the working directory to `Case Study 1/Data`. The source code for downloading the data from the World Bank's website and saving to the "Data"" directory can be found in the `gather.r` file and is also shown below:
+- There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that `destfile` refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the working directory to `Case Study 1/Data`. The source code for downloading the data from the World Bank's website and saving to the "Data" directory can be found in the `gather.r` file.
+
+- **Note:** The data can be downloaded by executing the `analysis.r` file as discussed in the previous section. The [download](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/download.file.html) function utilized in the `gather.r` file to download a file from the internet is shown below: 
 
 ```{r eval=FALSE}
 #Download Data GDP Ranking:
@@ -86,7 +89,7 @@ download(url,destfile="FGDP.raw.csv") #download file and save it to Data directo
 
 #### *Gross Domestic Product Data*
 
-**Explore the Data**: In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's examine the raw data first. The downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
+- **Explore the Data**: In this section, we will take a look at the GDP data set (i.e. `FGDP.raw.csv`). Before transforming the data, let's examine the raw data first. The downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format. 
 
 ```{r}
 #Read GDP Dataset into dataframe
@@ -100,7 +103,7 @@ gdp.raw <- read.csv("FGDP.raw.csv",header=TRUE,skip=3)
 dim(gdp.raw)
 ```
 
-**Data Cleaning** - Before making any changes to the raw data set, let's now assign the raw data to a new object with the name `gdp` in order to preserve the raw data. 
+- **Data Cleaning** - Before making any changes to the raw data set, let's now assign the raw data to a new object with the name `gdp` in order to preserve the raw data. 
 
 ```{r}
 #Assign Raw Data to "gdp"
@@ -181,7 +184,7 @@ head(colSums(is.na(gdp)))
 
 #### *Educational Data*
 
-**Explore the Data**:Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object "fedstats". 
+- **Explore the Data**:Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object "fedstats". 
 
 ```{r}
 #Read FEDSTATS Dataset into datframe
@@ -207,7 +210,7 @@ colSums(is.na(fedstats))
 
 <br>
 
-**Data Cleaning** - For this data set, there were no major steps necessary to tidy up the data. Although, given that the primary columns of interest are "CountryCode", "Long.Name", and "Income.Group", the remaining attributes will be dropped from the data frame. 
+- **Data Cleaning** - For this data set, there were no major steps necessary to tidy up the data. Although, given that the primary columns of interest are "CountryCode", "Long.Name", and "Income.Group", the remaining attributes will be dropped from the data frame. 
 
 ```{r}
 #Drop column index 4 thru the number of columns in the df
@@ -253,7 +256,7 @@ merge.gdp.fedstats[merge.gdp.fedstats == ""] <- NA
 merge.data.final<-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]
 ```
 
-**Final Merged Data Frame** - the first five rows will be displayed of the `merge.data.final` data frame to check if everything looks correct. 
+- **Final Merged Data Frame** - the first five rows will be displayed of the `merge.data.final` data frame to check if everything looks correct. 
 
 ```{r}
 #Display the first 5 rows of dataframe

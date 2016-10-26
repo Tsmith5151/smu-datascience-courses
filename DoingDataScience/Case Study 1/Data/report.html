@@ -11,6 +11,7 @@
 
 <meta name="author" content="Trace Smith" />
 
+<meta name="date" content="2016-10-26" />
 
 <title>Case Study 1</title>
 
@@ -116,8 +117,9 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Case Study 1</h1>
+<h3 class="subtitle"><em>Analyzing the GDP of The Top 190 Countries</em></h3>
 <h4 class="author"><em>Trace Smith</em></h4>
-<h4 class="date"><em>November 4, 2016</em></h4>
+<h4 class="date"><em>October 26, 2016</em></h4>
 
 </div>
 
@@ -167,7 +169,8 @@ source(&quot;../Analysis/analysis.r&quot;)</code></pre>
 <div id="downloading-the-dataset" class="section level3">
 <h3><strong>Downloading the Dataset</strong></h3>
 <ul>
-<li>There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that <code>destfile</code> refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the working directory to <code>Case Study 1/Data</code>. The source code for downloading the data from the World Bank’s website and saving to the “Data”&quot; directory can be found in the <code>gather.r</code> file and is also shown below:</li>
+<li><p>There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that <code>destfile</code> refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the working directory to <code>Case Study 1/Data</code>. The source code for downloading the data from the World Bank’s website and saving to the “Data” directory can be found in the <code>gather.r</code> file.</p></li>
+<li><p><strong>Note:</strong> The data can be downloaded by executing the <code>analysis.r</code> file as discussed in the previous section. The <a href="http://stat.ethz.ch/R-manual/R-devel/library/utils/html/download.file.html">download</a> function utilized in the <code>gather.r</code> file to download a file from the internet is shown below:</p></li>
 </ul>
 <pre class="r"><code>#Download Data GDP Ranking:
 url&lt;-&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv&quot; #URL to data
@@ -186,7 +189,9 @@ download(url,destfile=&quot;FGDP.raw.csv&quot;) #download file and save it to Da
 </ul>
 <div id="gross-domestic-product-data" class="section level4">
 <h4><em>Gross Domestic Product Data</em></h4>
-<p><strong>Explore the Data</strong>: In this section, we will take a look at the GDP data set (i.e. <code>FGDP.raw.csv</code>). Before transforming the data, let’s examine the raw data first. The downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format.</p>
+<ul>
+<li><strong>Explore the Data</strong>: In this section, we will take a look at the GDP data set (i.e. <code>FGDP.raw.csv</code>). Before transforming the data, let’s examine the raw data first. The downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format.</li>
+</ul>
 <pre class="r"><code>#Read GDP Dataset into dataframe
 gdp.raw &lt;- read.csv(&quot;FGDP.raw.csv&quot;,header=TRUE,skip=3)</code></pre>
 <ul>
@@ -195,7 +200,9 @@ gdp.raw &lt;- read.csv(&quot;FGDP.raw.csv&quot;,header=TRUE,skip=3)</code></pre>
 <pre class="r"><code>#Dimensions
 dim(gdp.raw)</code></pre>
 <pre><code>## [1] 327  10</code></pre>
-<p><strong>Data Cleaning</strong> - Before making any changes to the raw data set, let’s now assign the raw data to a new object with the name <code>gdp</code> in order to preserve the raw data.</p>
+<ul>
+<li><strong>Data Cleaning</strong> - Before making any changes to the raw data set, let’s now assign the raw data to a new object with the name <code>gdp</code> in order to preserve the raw data.</li>
+</ul>
 <pre class="r"><code>#Assign Raw Data to &quot;gdp&quot;
 gdp &lt;-gdp.raw
 head(gdp,5)</code></pre>
@@ -272,7 +279,9 @@ head(colSums(is.na(gdp)))</code></pre>
 </div>
 <div id="educational-data" class="section level4">
 <h4><em>Educational Data</em></h4>
-<p><strong>Explore the Data</strong>:Now, let’s take a look at the Educational data (i.e. <code>FEDSTATS_Country.raw</code>). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object “fedstats”.</p>
+<ul>
+<li><strong>Explore the Data</strong>:Now, let’s take a look at the Educational data (i.e. <code>FEDSTATS_Country.raw</code>). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object “fedstats”.</li>
+</ul>
 <pre class="r"><code>#Read FEDSTATS Dataset into datframe
 fedstats.raw &lt;- read.csv(&quot;FEDSTATS_Country.raw.csv&quot;,header=TRUE)
 
@@ -352,7 +361,9 @@ colSums(is.na(fedstats))</code></pre>
 ##                                        Short.Name 
 ##                                                 0</code></pre>
 <p><br></p>
-<p><strong>Data Cleaning</strong> - For this data set, there were no major steps necessary to tidy up the data. Although, given that the primary columns of interest are “CountryCode”, “Long.Name”, and “Income.Group”, the remaining attributes will be dropped from the data frame.</p>
+<ul>
+<li><strong>Data Cleaning</strong> - For this data set, there were no major steps necessary to tidy up the data. Although, given that the primary columns of interest are “CountryCode”, “Long.Name”, and “Income.Group”, the remaining attributes will be dropped from the data frame.</li>
+</ul>
 <pre class="r"><code>#Drop column index 4 thru the number of columns in the df
 fedstats[4:ncol(fedstats)] &lt;-NULL</code></pre>
 <ul>
@@ -404,7 +415,9 @@ merge.gdp.fedstats[merge.gdp.fedstats == &quot;&quot;] &lt;- NA</code></pre>
 </ul>
 <pre class="r"><code>#Remove any Rows Wth NA's; keep all columns (i.e. &quot;,&quot;)
 merge.data.final&lt;-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]</code></pre>
-<p><strong>Final Merged Data Frame</strong> - the first five rows will be displayed of the <code>merge.data.final</code> data frame to check if everything looks correct.</p>
+<ul>
+<li><strong>Final Merged Data Frame</strong> - the first five rows will be displayed of the <code>merge.data.final</code> data frame to check if everything looks correct.</li>
+</ul>
 <pre class="r"><code>#Display the first 5 rows of dataframe
 head(merge.data.final,5)</code></pre>
 <pre><code>##   CountryCode              Economy                    Long.Name    GDP
