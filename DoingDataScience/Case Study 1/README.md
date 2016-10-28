@@ -37,5 +37,9 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv
  
  - [merge.r](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Data/merge.r): merges two data frames utilizing the unique key identifier "CountryCode"
 
+<p align="center">
+<img src ="https://udacity-github-sync-content.s3.amazonaws.com/_attachments/26272/1477612479/Screen_Shot_2016-10-27_at_6.50.38_PM.png">
+</p>
+
 ### Reference:
 Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: https://student.unsw.edu.au/writing-case-study
