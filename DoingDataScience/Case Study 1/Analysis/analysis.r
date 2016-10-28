@@ -17,13 +17,25 @@ merge.data.agg <- ddply(merge.data.final, .(Income.Group), summarize,  Ranking=m
 head(merge.data.agg,5)
 
 #Question:4 Plot GDP and group by Income.Group
-p<-ggplot(merge.data.final)+ geom_point(aes(y=GDP,x=Income.Group,colour=Income.Group)) +scale_y_log10()
+
+#Create a scatter plot using ggplot2 to plot Income.Group vs GDP (merged data frame)
+p<-ggplot(merge.data.final)+ geom_point(aes(y=GDP,x=Income.Group,colour=Income.Group)) +scale_y_log10() #change y axis to log scale
+p+labs(title="GDP vs Income Group", # add title
+       x="Income Groups",y="Log: GDP-millions",colour="Income Group") + #name labels
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) #adjust the x-axis labels (rotate)
+
+#create a box blot (ggplot2)
+p<-ggplot(merge.data.final,aes(x=Income.Group,y=GDP))+ geom_boxplot(aes(fill=Income.Group)) +scale_y_log10() #change y axis to log scale
 p+labs(title="GDP vs Income Group",
-       x="Income Groups",y="Log: GDP-millions",colour="Income Group") +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+       x="Income Groups",y="Log: GDP-millions",colour="Income Group") + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) + #adjust the x-axis labels (rotate)
+  theme(legend.position = "none") #turn off legend
 
 #Question:4 GDP Ranking into 5 Quantiles
+#convert Ranking column into numeric -- initially a factor
 merge.data.final$Ranking <- as.numeric(as.character(merge.data.final$Ranking))
+#divide the numeric vector into 5 break points (i.e. quantiles)
 merge.data.final$Group <- cut(merge.data.final$Ranking,breaks=5)
+#take the quantiles and income.group from the merge data file and create a table
 quant.table<-table(merge.data.final$Income.Group, merge.data.final$Group)
 quant.table
