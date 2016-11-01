@@ -12,7 +12,7 @@ merge.gdp.fedstats[merge.gdp.fedstats == ""] <- NA
 #Remove any Rows Wth NA's
 merge.data.final<-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]
 
-#The number of N/A per column
+#Return the number of N/A per column
 merge.na <- colSums(is.na(merge.data.final))
 merge.na
 

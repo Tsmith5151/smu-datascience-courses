@@ -8,7 +8,7 @@ November 4, 2016
 
 ### **Introduction**
 
-The objective of this work is to gather two separates data files, read both files into separate data frames, clean up the data, and then perform a horizontal merge of the two data frames. The final task is to then take the merged data and conduct various statistical analysis using R. As an overview of the raw data, the [Gross Domestic Product Ranking](http://data.worldbank.org/data-catalog/GDP-ranking-table) data set consists of 327 rows and 10 columns while the [Education Statistics](http://data.worldbank.org/data-catalog/ed-stats) contains 31 different features with 234 rows. Both data sets were downloaded from the [World Bank](http://data.worldbank.org/) website and then read into separate data frames. From here, several steps were taken to tidy the data before performing a merge on the key variable "CountryCode". After preprocessing the data, the ultimate goal is to be able to extract information to answer several specific questions. The R code to address the following inquiries can be found in the Analysis directory and the file name `analysis.r`:
+The objective of this work is to gather two separates data files, read both files into separate data frames, clean up the data, and then perform a horizontal merge of the two data frames. The final task is to then take the merged data and conduct various statistical analysis using R. As an overview of the raw data, the [Gross Domestic Product Ranking](http://data.worldbank.org/data-catalog/GDP-ranking-table) data set consists of 327 rows and 10 columns while the [Education Statistics](http://data.worldbank.org/data-catalog/ed-stats) contains 31 different features with 234 rows. Both data sets were downloaded from the [World Bank](http://data.worldbank.org/) website and then read into respected data frames. From here, several steps were taken to tidy the data before performing a merge on the key variable "CountryCode". After preprocessing the data, the ultimate goal is to be able to extract information to answer several specific questions. The R code to address the following inquiries can be found in the Analysis directory under the file name `analysis.r`:
 
   1. Merge the data based on the country shortcode. How many of the IDs match?
   2. Sort the data frame in ascending order by GDP (so United States is last). What is the 13th
@@ -44,11 +44,11 @@ setwd(dir) #set working directory
 
 ### **Run Source Code**
 
-- In the Analysis directory, the source code to execute the gathering of data, data cleansing, merging the data, and code to analyze the data can be executed by the running the file `analysis.r`. Using the `source` function, the R files are linked together and thus can be run all at once via the `analysis.r` file. Here is a brief summary of the files implemented in this work:
+- In the Analysis directory, gathering of data, data cleansing, merging the data, and code to analyze the data can be executed by the running the file `analysis.r` (i.e. located in the Analysis directory). Using the `source` function, the R files are linked together and thus can be run all at once via the `analysis.r` file. Here is a brief summary of the files implemented in this work:
 
 - `gather.r`: downloads the data from the internet
 - `tidy.r`: takes the two data frames and cleans the rows/columns to prepare for statistical analysis
-- `merge.r`: takes the cleaned data and then merges two data frames utilizing the unique key identifier "CountryCode"
+- `merge.r`: takes the cleaned data and then merges two data frames horizontally utilizing the unique key identifier "CountryCode"
 - `analysis.r`: takes the merged data and answers the five questions as previously defined in the introduction
 
 
@@ -62,7 +62,7 @@ source("../Analysis/analysis.r")
 
 - There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that `destfile` refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the working directory to `Case Study 1/Data`. The source code for downloading the data from the World Bank's website and saving to the "Data" directory can be found in the `gather.r` file.
 
-- **Note:** The data can be downloaded by executing the `analysis.r` file as discussed in the previous section. The [download](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/download.file.html) function utilized in the `gather.r` file to download a file from the internet is shown below: 
+- **Note:** The data can be downloaded by executing the `analysis.r` file as discussed in the previous section. The [download](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/download.file.html) function utilized in the `gather.r` file to download the two data sets from the internet is shown below: 
 
 
 ```r
@@ -82,7 +82,7 @@ download(url,destfile="FGDP.raw.csv") #download file and save it to Data directo
 
 ### **Tyding the Data**
 
-- The following code blocks will walk through the R code utilized to clean up the messy data for each data frame. As a note here, the NA's will not be removed during the cleaning process, rather both empty observations and all NA's will be removed in the following section when merging the data together. Let's briefly explore the two data sets below. 
+- The following code blocks will walk through the R code utilized to clean up the messy data for each data frame. As a note here, the NA's will not be removed during the cleaning process, rather both empty observations (i.e. "") and all NA's will be removed in the following section when merging the data together. Let's briefly explore the two data sets below. 
 
 #### *Gross Domestic Product Data*
 
@@ -155,7 +155,7 @@ colnames(gdp)[1] <- "CountryCode"
 colnames(gdp)[4] <- "GDP"
 ```
 
-- Likewise as before, to verify if the header has been correctly renamed, call the `names` function:
+- Similar to as before, to verify if the header has been correctly renamed, call the `names` function:
 
 
 ```r
@@ -195,7 +195,7 @@ str(gdp$Ranking) #structure of Ranking column
 ##  Factor w/ 194 levels "",".. Not available.  ",..: 3 104 115 126 137 148 159 170 181 4 ...
 ```
 
-- The script to convert these columns (i.e. factors) to numeric is:
+- The script to convert these columns (i.e. factors) to numeric is as follows:
 
 
 ```r
@@ -239,7 +239,7 @@ head(colSums(is.na(gdp)))
 
 #### *Educational Data*
 
-- **Explore the Data**:Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object "fedstats". 
+- **Explore the Data**: Now, let's take a look at the Educational data (i.e. `FEDSTATS_Country.raw`). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object "fedstats". 
 
 
 ```r
@@ -398,7 +398,7 @@ knitr::kable(head(merge.data.final,5))
 
 <br>
 
-### Statistical Analysis
+### **Statistical Analysis**
 
 **Question #1: Merge the data based on the country shortcode. How many of the IDs match?**
 
@@ -406,7 +406,7 @@ knitr::kable(head(merge.data.final,5))
 
 
 ```r
-# Counts the total mataches between fedstats and gpd when merging on CountryCode
+# Returns the total mataches between fedstats and gpd when merging on CountryCode
 print(paste0("Total Number of ID Matches: ",
              length(intersect(fedstats$CountryCode,gdp$CountryCode)))) 
 ```
@@ -433,8 +433,8 @@ dim(merge.data.final)
 
 
 ```r
-#Sort merged data frame by ascending order
-sort.gdp <-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last = TRUE),][12:13,] # select rows 12-13 and all columns (tie between rankings)
+#Sort merged data frame by ascending order & select rows 12-13 and all columns 
+sort.gdp <-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last = TRUE),][12:13,] 
 sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")] #only display the identified columns
 ```
 
@@ -471,7 +471,7 @@ Upper middle income      92.13333
 
 **Question #4: Plot the GDP for all of the countries. Use ggplot2 to color your plot by Income Group.**
 
-- The Gross Domestic Product vs Income Group scatter plot is generated from the below code block. One observation drawn from this scatter plot is that the within group standard deviation is the greatest for the lower middle income and upper middle income groups. 
+- The Gross Domestic Product vs Income Group scatter plot is generated from the below code block. One observation drawn from the scatter plot (top) or the box  plot (bottom) is that the within group standard deviation is the greatest for the lower middle income and upper middle income groups. Furthermore, the interquartile range for the low income group is the smallest. 
 
 **Scatter Plot**
 
@@ -498,15 +498,49 @@ p+labs(title="GDP vs Income Group",
 
 ![](report_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
 
+- One other way to analyze the Income Group is to plot the GDP vs the Ranking and group by the Income Groups. In the plot below, it can be observed that the lower middle income and low income has a larger distribution for GDP rankings greater than 100.  
+
+
+```r
+#Create a scatter plot using ggplot2 to plot Ranking vs GDP and group by Income (merged data frame)
+p<-ggplot(merge.data.final)+ geom_point(aes(y=GDP,x=Ranking,colour=Income.Group)) +scale_y_log10() #change y axis to log scale
+p+labs(title="GDP vs Income Group", # add title
+       x="Ranking",y="Log: GDP (millions)",colour="Income Group") + #name labels
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) #adjust the x-axis labels (rotate)
+```
+
+![](report_files/figure-html/unnamed-chunk-34-1.png)<!-- -->
+
 **Question #5: Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. How many countries are Lower middle income but among the 38 nations with highest GDP?**
 
 - The cut function divides a numeric vector into different ranges. The total number of break points to apply on the `merge.data.final$Ranking` column is 5, which represents the different quantiles. The quantile ranges associated with each "Income.Group" is listed in the table below.
 
-### Conclusion
 
-- In summary, this primary objective of this work is to take unstructured data files, tidy/clean up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data and thus a large percentage of work will be cleaning up messy data sets before processing it. This work walks through a practical example of writing several scripts in R to clean a messy data set before performing any interpretations on the data.
+```r
+#convert Ranking column into numeric -- initially a factor
+merge.data.final$Ranking <- as.numeric(as.character(merge.data.final$Ranking))
+#divide the numeric vector into 5 break points (i.e. quantiles)
+merge.data.final$Group <- cut(merge.data.final$Ranking,breaks=5)
+#take the quantiles and income.group from the merge data file and create a table
+quant.table<-table(merge.data.final$Income.Group, merge.data.final$Group)
+#return table
+knitr::kable(quant.table)
+```
+
+                        (0.811,38.8]   (38.8,76.6]   (76.6,114]   (114,152]   (152,190]
+---------------------  -------------  ------------  -----------  ----------  ----------
+                                   0             0            0           0           0
+High income: nonOECD               4             5            8           4           2
+High income: OECD                 18            10            1           1           0
+Low income                         0             1            9          16          11
+Lower middle income                5            13           12           8          16
+Upper middle income               11             9            8           8           9
+
+### **Conclusion**
+
+- In summary, this primary objective of this work is to take two unstructured data files, read the data from the a csv file into a data frame, tidy/clean up the data, merge the data frames, and perform some analysis on the final data set. As Data Scientist, it is very rare to receive perfectly formatted data and thus a large percentage of work will be cleaning up messy data sets before processing it as illustrated in this work. After preparing the data, statistical inference can then be made to the data. This Case Study walks through a practical example of cleaning a messy data set using R and the source code can simply be executed by running `analysis.r` which is sourced (i.e. linked) to the merge, tidy, and gather .r files in the Data directory. 
 
 <br>
 
-### Reference
+### **Reference**
 - Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: [Link](https://student.unsw.edu.au/writing-case-study)

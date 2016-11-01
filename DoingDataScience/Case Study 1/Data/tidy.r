@@ -29,7 +29,7 @@ gdp.raw <- read.csv("FGDP.raw.csv",header=TRUE,skip=3)
 #Names of Columns
 names(gdp.raw)
 
-#Dimensions
+#Return Dimensions (rows,columns)
 dim(gdp.raw)
 
 #Assign Raw Data to "gdp"
