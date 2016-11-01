@@ -112,18 +112,17 @@ dim(gdp.raw)
 ```r
 #Assign Raw Data to "gdp"
 gdp <-gdp.raw
-knitr::kable(head(gdp,5))
+head(gdp,5)
 ```
 
-
-
-X     Ranking   X.1   Economy         US.dollars.   X.2   X.3   X.4   X.5   X.6 
-----  --------  ----  --------------  ------------  ----  ----  ----  ----  ----
-                NA                                        NA    NA    NA    NA  
-USA   1         NA    United States   16,244,600          NA    NA    NA    NA  
-CHN   2         NA    China           8,227,103           NA    NA    NA    NA  
-JPN   3         NA    Japan           5,959,718           NA    NA    NA    NA  
-DEU   4         NA    Germany         3,428,131           NA    NA    NA    NA  
+```
+##     X Ranking X.1       Economy  US.dollars. X.2 X.3 X.4 X.5 X.6
+## 1              NA                                 NA  NA  NA  NA
+## 2 USA       1  NA United States  16,244,600       NA  NA  NA  NA
+## 3 CHN       2  NA         China   8,227,103       NA  NA  NA  NA
+## 4 JPN       3  NA         Japan   5,959,718       NA  NA  NA  NA
+## 5 DEU       4  NA       Germany   3,428,131       NA  NA  NA  NA
+```
 
 - Next, as we can see from the output above, there are a total of 6 columns with missing data (i.e. NA), thus we will delete these columns. A quick way of dropping these columns would be to assign `NULL` to the respected index column of the "gdp" data frame.
 
@@ -211,16 +210,17 @@ gdp$Ranking <- as.numeric(gsub("[^[:digit:]]","", gdp$Ranking))
 
 ```r
 #return the first 5 rows of the gdp data frame
-knitr::kable(head(gdp,5))
+head(gdp,5)
 ```
 
-     CountryCode    Ranking  Economy               GDP
----  ------------  --------  --------------  ---------
-2    USA                  1  United States    16244600
-3    CHN                  2  China             8227103
-4    JPN                  3  Japan             5959718
-5    DEU                  4  Germany           3428131
-6    FRA                  5  France            2612878
+```
+##   CountryCode Ranking       Economy      GDP
+## 2         USA       1 United States 16244600
+## 3         CHN       2         China  8227103
+## 4         JPN       3         Japan  5959718
+## 5         DEU       4       Germany  3428131
+## 6         FRA       5        France  2612878
+```
 
 - Note: before removing any rows containing `NA` for the "Ranking" column, the code below will count the total number of NA observations per each column.
 
@@ -267,44 +267,73 @@ dim(fedstats.raw)
 
 ```r
 #The number of N/A per column
-knitr::kable(colSums(is.na(fedstats)))
+colSums(is.na(fedstats))
 ```
 
-
-
---------------------------------------------------  ----
-CountryCode                                            0
-Long.Name                                              0
-Income.Group                                           0
-Region                                                 0
-Lending.category                                       0
-Other.groups                                           0
-Currency.Unit                                          0
-Latest.population.census                               0
-Latest.household.survey                                0
-Special.Notes                                          0
-National.accounts.base.year                            0
-National.accounts.reference.year                     197
-System.of.National.Accounts                          149
-SNA.price.valuation                                    0
-Alternative.conversion.factor                          0
-PPP.survey.year                                       89
-Balance.of.Payments.Manual.in.use                      0
-External.debt.Reporting.status                         0
-System.of.trade                                        0
-Government.Accounting.concept                          0
-IMF.data.dissemination.standard                        0
-Source.of.most.recent.Income.and.expenditure.data      0
-Vital.registration.complete                            0
-Latest.agricultural.census                             0
-Latest.industrial.data                               139
-Latest.trade.data                                     46
-Latest.water.withdrawal.data                          82
-X2.alpha.code                                          1
-WB.2.code                                              1
-Table.Name                                             0
-Short.Name                                             0
---------------------------------------------------  ----
+```
+##                                       CountryCode 
+##                                                 0 
+##                                         Long.Name 
+##                                                 0 
+##                                      Income.Group 
+##                                                 0 
+##                                            Region 
+##                                                 0 
+##                                  Lending.category 
+##                                                 0 
+##                                      Other.groups 
+##                                                 0 
+##                                     Currency.Unit 
+##                                                 0 
+##                          Latest.population.census 
+##                                                 0 
+##                           Latest.household.survey 
+##                                                 0 
+##                                     Special.Notes 
+##                                                 0 
+##                       National.accounts.base.year 
+##                                                 0 
+##                  National.accounts.reference.year 
+##                                               197 
+##                       System.of.National.Accounts 
+##                                               149 
+##                               SNA.price.valuation 
+##                                                 0 
+##                     Alternative.conversion.factor 
+##                                                 0 
+##                                   PPP.survey.year 
+##                                                89 
+##                 Balance.of.Payments.Manual.in.use 
+##                                                 0 
+##                    External.debt.Reporting.status 
+##                                                 0 
+##                                   System.of.trade 
+##                                                 0 
+##                     Government.Accounting.concept 
+##                                                 0 
+##                   IMF.data.dissemination.standard 
+##                                                 0 
+## Source.of.most.recent.Income.and.expenditure.data 
+##                                                 0 
+##                       Vital.registration.complete 
+##                                                 0 
+##                        Latest.agricultural.census 
+##                                                 0 
+##                            Latest.industrial.data 
+##                                               139 
+##                                 Latest.trade.data 
+##                                                46 
+##                      Latest.water.withdrawal.data 
+##                                                82 
+##                                     X2.alpha.code 
+##                                                 1 
+##                                         WB.2.code 
+##                                                 1 
+##                                        Table.Name 
+##                                                 0 
+##                                        Short.Name 
+##                                                 0
+```
 
 <br>
 
@@ -321,18 +350,17 @@ fedstats[4:ncol(fedstats)] <-NULL
 
 ```r
 #Display the first 5 rows of dataframe
-knitr::kable(head(fedstats,5))
+head(fedstats,5)
 ```
 
-
-
-CountryCode   Long.Name                      Income.Group         
-------------  -----------------------------  ---------------------
-ABW           Aruba                          High income: nonOECD 
-ADO           Principality of Andorra        High income: nonOECD 
-AFG           Islamic State of Afghanistan   Low income           
-AGO           People's Republic of Angola    Lower middle income  
-ALB           Republic of Albania            Upper middle income  
+```
+##   CountryCode                    Long.Name         Income.Group
+## 1         ABW                        Aruba High income: nonOECD
+## 2         ADO      Principality of Andorra High income: nonOECD
+## 3         AFG Islamic State of Afghanistan           Low income
+## 4         AGO  People's Republic of Angola  Lower middle income
+## 5         ALB          Republic of Albania  Upper middle income
+```
 
 <br>
 
@@ -352,18 +380,23 @@ merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")
 ```r
 #Change the order of the columns:
 merge.gdp.fedstats <-merge.gdp.fedstats[c(1,3,5,4,6,2)]
-knitr::kable(head(merge.gdp.fedstats,5))
+head(merge.gdp.fedstats,5)
 ```
 
-
-
-CountryCode   Economy       Long.Name                          GDP  Income.Group            Ranking
-------------  ------------  -----------------------------  -------  ---------------------  --------
-ABW           Aruba         Aruba                             2584  High income: nonOECD        161
-ADO           Andorra       Principality of Andorra             NA  High income: nonOECD         NA
-AFG           Afghanistan   Islamic State of Afghanistan     20497  Low income                  105
-AGO           Angola        People's Republic of Angola     114147  Lower middle income          60
-ALB           Albania       Republic of Albania              12648  Upper middle income         125
+```
+##   CountryCode     Economy                    Long.Name    GDP
+## 1         ABW       Aruba                        Aruba   2584
+## 2         ADO     Andorra      Principality of Andorra     NA
+## 3         AFG Afghanistan Islamic State of Afghanistan  20497
+## 4         AGO      Angola  People's Republic of Angola 114147
+## 5         ALB     Albania          Republic of Albania  12648
+##           Income.Group Ranking
+## 1 High income: nonOECD     161
+## 2 High income: nonOECD      NA
+## 3           Low income     105
+## 4  Lower middle income      60
+## 5  Upper middle income     125
+```
 
 - Note: the answers to the analysis questions in the following section is based on removing each observation with NA in the "Ranking" column. Thus, the **merge.data.final** data frame will be the source of reference in the `analysis.r` file. First, let's replace any observation that is blank with NA:
 
@@ -385,16 +418,23 @@ merge.data.final<-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]
 
 ```r
 #Display the first 5 rows of dataframe
-knitr::kable(head(merge.data.final,5))
+head(merge.data.final,5)
 ```
 
-     CountryCode   Economy                Long.Name                          GDP  Income.Group            Ranking
----  ------------  ---------------------  -----------------------------  -------  ---------------------  --------
-1    ABW           Aruba                  Aruba                             2584  High income: nonOECD        161
-3    AFG           Afghanistan            Islamic State of Afghanistan     20497  Low income                  105
-4    AGO           Angola                 People's Republic of Angola     114147  Lower middle income          60
-5    ALB           Albania                Republic of Albania              12648  Upper middle income         125
-6    ARE           United Arab Emirates   United Arab Emirates            348595  High income: nonOECD         32
+```
+##   CountryCode              Economy                    Long.Name    GDP
+## 1         ABW                Aruba                        Aruba   2584
+## 3         AFG          Afghanistan Islamic State of Afghanistan  20497
+## 4         AGO               Angola  People's Republic of Angola 114147
+## 5         ALB              Albania          Republic of Albania  12648
+## 6         ARE United Arab Emirates         United Arab Emirates 348595
+##           Income.Group Ranking
+## 1 High income: nonOECD     161
+## 3           Low income     105
+## 4  Lower middle income      60
+## 5  Upper middle income     125
+## 6 High income: nonOECD      32
+```
 
 <br>
 
@@ -456,18 +496,17 @@ sort.gdp[,c("CountryCode","Long.Name","Ranking","GDP")] #only display the identi
 ```r
 #Aggregrate data frame by Income.Group and take the mean rankings
 merge.data.agg <- ddply(merge.data.final, .(Income.Group), summarize,  Ranking=mean(Ranking))
-knitr::kable(merge.data.agg)
+merge.data.agg
 ```
 
-
-
-Income.Group              Ranking
----------------------  ----------
-High income: nonOECD     91.91304
-High income: OECD        32.96667
-Low income              133.72973
-Lower middle income     107.70370
-Upper middle income      92.13333
+```
+##           Income.Group   Ranking
+## 1 High income: nonOECD  91.91304
+## 2    High income: OECD  32.96667
+## 3           Low income 133.72973
+## 4  Lower middle income 107.70370
+## 5  Upper middle income  92.13333
+```
 
 **Question #4: Plot the GDP for all of the countries. Use ggplot2 to color your plot by Income Group.**
 
@@ -524,17 +563,27 @@ merge.data.final$Group <- cut(merge.data.final$Ranking,breaks=5)
 #take the quantiles and income.group from the merge data file and create a table
 quant.table<-table(merge.data.final$Income.Group, merge.data.final$Group)
 #return table
-knitr::kable(quant.table)
+quant.table
 ```
 
-                        (0.811,38.8]   (38.8,76.6]   (76.6,114]   (114,152]   (152,190]
----------------------  -------------  ------------  -----------  ----------  ----------
-                                   0             0            0           0           0
-High income: nonOECD               4             5            8           4           2
-High income: OECD                 18            10            1           1           0
-Low income                         0             1            9          16          11
-Lower middle income                5            13           12           8          16
-Upper middle income               11             9            8           8           9
+```
+##                       
+##                        (0.811,38.8] (38.8,76.6] (76.6,114] (114,152]
+##                                   0           0          0         0
+##   High income: nonOECD            4           5          8         4
+##   High income: OECD              18          10          1         1
+##   Low income                      0           1          9        16
+##   Lower middle income             5          13         12         8
+##   Upper middle income            11           9          8         8
+##                       
+##                        (152,190]
+##                                0
+##   High income: nonOECD         2
+##   High income: OECD            0
+##   Low income                  11
+##   Lower middle income         16
+##   Upper middle income          9
+```
 
 ### **Conclusion**
 
