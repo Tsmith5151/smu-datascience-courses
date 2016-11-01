@@ -1,4 +1,4 @@
-_DS_Store
-_RData.gz
-_Rhistory	
+*.DS_Store
+*.RData.gz
+*.Rhistory	
 
