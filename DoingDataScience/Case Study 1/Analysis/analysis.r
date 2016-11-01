@@ -2,6 +2,8 @@
 ########### Questions ###################
 #########################################
 
+source("../Data/gather.r") #Read R code from merge.r
+source("../Data/tidy.r") #Read R code from merge.r
 source("../Data/merge.r") #Read R code from merge.r
 
 #Question:1 Number of Matches
@@ -30,6 +32,13 @@ p+labs(title="GDP vs Income Group",
        x="Income Groups",y="Log: GDP-millions",colour="Income Group") + 
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) + #adjust the x-axis labels (rotate)
   theme(legend.position = "none") #turn off legend
+
+#Create a scatter plot using ggplot2 to plot Ranking vs GDP and group by Income (merged data frame)
+p<-ggplot(merge.data.final)+ geom_point(aes(y=GDP,x=Ranking,colour=Income.Group)) +scale_y_log10()  #change y axis to log scale
+p+labs(title="GDP vs Income Group", # add title
+       x="Ranking",y="Log: GDP-millions",colour="Income Group") + #name labels
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) #adjust the x-axis labels (rotate)
+
 
 #Question:4 GDP Ranking into 5 Quantiles
 #convert Ranking column into numeric -- initially a factor
