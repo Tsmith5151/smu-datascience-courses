@@ -206,13 +206,85 @@ dim(gdp.raw)</code></pre>
 </ul>
 <pre class="r"><code>#Assign Raw Data to &quot;gdp&quot;
 gdp &lt;-gdp.raw
-head(gdp,5)</code></pre>
-<pre><code>##     X Ranking X.1       Economy  US.dollars. X.2 X.3 X.4 X.5 X.6
-## 1              NA                                 NA  NA  NA  NA
-## 2 USA       1  NA United States  16,244,600       NA  NA  NA  NA
-## 3 CHN       2  NA         China   8,227,103       NA  NA  NA  NA
-## 4 JPN       3  NA         Japan   5,959,718       NA  NA  NA  NA
-## 5 DEU       4  NA       Germany   3,428,131       NA  NA  NA  NA</code></pre>
+knitr::kable(head(gdp,5))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">X</th>
+<th align="left">Ranking</th>
+<th align="left">X.1</th>
+<th align="left">Economy</th>
+<th align="left">US.dollars.</th>
+<th align="left">X.2</th>
+<th align="left">X.3</th>
+<th align="left">X.4</th>
+<th align="left">X.5</th>
+<th align="left">X.6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">USA</td>
+<td align="left">1</td>
+<td align="left">NA</td>
+<td align="left">United States</td>
+<td align="left">16,244,600</td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">CHN</td>
+<td align="left">2</td>
+<td align="left">NA</td>
+<td align="left">China</td>
+<td align="left">8,227,103</td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">JPN</td>
+<td align="left">3</td>
+<td align="left">NA</td>
+<td align="left">Japan</td>
+<td align="left">5,959,718</td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">DEU</td>
+<td align="left">4</td>
+<td align="left">NA</td>
+<td align="left">Germany</td>
+<td align="left">3,428,131</td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>Next, as we can see from the output above, there are a total of 6 columns with missing data (i.e. NA), thus we will delete these columns. A quick way of dropping these columns would be to assign <code>NULL</code> to the respected index column of the “gdp” data frame.</li>
 </ul>
@@ -262,13 +334,55 @@ gdp$Ranking &lt;- as.numeric(gsub(&quot;[^[:digit:]]&quot;,&quot;&quot;, gdp$Ran
 <li>In this code block, the output will allow us to look over the data frame and make sure everything looks correct before moving forward.</li>
 </ul>
 <pre class="r"><code>#return the first 5 rows of the gdp data frame
-head(gdp,5)</code></pre>
-<pre><code>##   CountryCode Ranking       Economy      GDP
-## 2         USA       1 United States 16244600
-## 3         CHN       2         China  8227103
-## 4         JPN       3         Japan  5959718
-## 5         DEU       4       Germany  3428131
-## 6         FRA       5        France  2612878</code></pre>
+knitr::kable(head(gdp,5))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">CountryCode</th>
+<th align="right">Ranking</th>
+<th align="left">Economy</th>
+<th align="right">GDP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">USA</td>
+<td align="right">1</td>
+<td align="left">United States</td>
+<td align="right">16244600</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">CHN</td>
+<td align="right">2</td>
+<td align="left">China</td>
+<td align="right">8227103</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">JPN</td>
+<td align="right">3</td>
+<td align="left">Japan</td>
+<td align="right">5959718</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">DEU</td>
+<td align="right">4</td>
+<td align="left">Germany</td>
+<td align="right">3428131</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">FRA</td>
+<td align="right">5</td>
+<td align="left">France</td>
+<td align="right">2612878</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>Note: before removing any rows containing <code>NA</code> for the “Ranking” column, the code below will count the total number of NA observations per each column.</li>
 </ul>
@@ -371,13 +485,43 @@ fedstats[4:ncol(fedstats)] &lt;-NULL</code></pre>
 <li>After dropping the respected columns, a look at the first five rows of the educational data frame is shown below.</li>
 </ul>
 <pre class="r"><code>#Display the first 5 rows of dataframe
-head(fedstats,5)</code></pre>
-<pre><code>##   CountryCode                    Long.Name         Income.Group
-## 1         ABW                        Aruba High income: nonOECD
-## 2         ADO      Principality of Andorra High income: nonOECD
-## 3         AFG Islamic State of Afghanistan           Low income
-## 4         AGO  People's Republic of Angola  Lower middle income
-## 5         ALB          Republic of Albania  Upper middle income</code></pre>
+knitr::kable(head(fedstats,5))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">CountryCode</th>
+<th align="left">Long.Name</th>
+<th align="left">Income.Group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ABW</td>
+<td align="left">Aruba</td>
+<td align="left">High income: nonOECD</td>
+</tr>
+<tr class="even">
+<td align="left">ADO</td>
+<td align="left">Principality of Andorra</td>
+<td align="left">High income: nonOECD</td>
+</tr>
+<tr class="odd">
+<td align="left">AFG</td>
+<td align="left">Islamic State of Afghanistan</td>
+<td align="left">Low income</td>
+</tr>
+<tr class="even">
+<td align="left">AGO</td>
+<td align="left">People’s Republic of Angola</td>
+<td align="left">Lower middle income</td>
+</tr>
+<tr class="odd">
+<td align="left">ALB</td>
+<td align="left">Republic of Albania</td>
+<td align="left">Upper middle income</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 </div>
 </div>
@@ -393,19 +537,61 @@ merge.gdp.fedstats &lt;- merge(gdp,fedstats,by=&quot;CountryCode&quot;)</code></
 </ul>
 <pre class="r"><code>#Change the order of the columns:
 merge.gdp.fedstats &lt;-merge.gdp.fedstats[c(1,3,5,4,6,2)]
-head(merge.gdp.fedstats,5)</code></pre>
-<pre><code>##   CountryCode     Economy                    Long.Name    GDP
-## 1         ABW       Aruba                        Aruba   2584
-## 2         ADO     Andorra      Principality of Andorra     NA
-## 3         AFG Afghanistan Islamic State of Afghanistan  20497
-## 4         AGO      Angola  People's Republic of Angola 114147
-## 5         ALB     Albania          Republic of Albania  12648
-##           Income.Group Ranking
-## 1 High income: nonOECD     161
-## 2 High income: nonOECD      NA
-## 3           Low income     105
-## 4  Lower middle income      60
-## 5  Upper middle income     125</code></pre>
+knitr::kable(head(merge.gdp.fedstats,5))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">CountryCode</th>
+<th align="left">Economy</th>
+<th align="left">Long.Name</th>
+<th align="right">GDP</th>
+<th align="left">Income.Group</th>
+<th align="right">Ranking</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ABW</td>
+<td align="left">Aruba</td>
+<td align="left">Aruba</td>
+<td align="right">2584</td>
+<td align="left">High income: nonOECD</td>
+<td align="right">161</td>
+</tr>
+<tr class="even">
+<td align="left">ADO</td>
+<td align="left">Andorra</td>
+<td align="left">Principality of Andorra</td>
+<td align="right">NA</td>
+<td align="left">High income: nonOECD</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">AFG</td>
+<td align="left">Afghanistan</td>
+<td align="left">Islamic State of Afghanistan</td>
+<td align="right">20497</td>
+<td align="left">Low income</td>
+<td align="right">105</td>
+</tr>
+<tr class="even">
+<td align="left">AGO</td>
+<td align="left">Angola</td>
+<td align="left">People’s Republic of Angola</td>
+<td align="right">114147</td>
+<td align="left">Lower middle income</td>
+<td align="right">60</td>
+</tr>
+<tr class="odd">
+<td align="left">ALB</td>
+<td align="left">Albania</td>
+<td align="left">Republic of Albania</td>
+<td align="right">12648</td>
+<td align="left">Upper middle income</td>
+<td align="right">125</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>Note: the answers to the analysis questions in the following section is based on removing each observation with NA in the “Ranking” column. Thus, the <strong>merge.data.final</strong> data frame will be the source of reference in the <code>analysis.r</code> file. First, let’s replace any observation that is blank with NA:</li>
 </ul>
@@ -420,19 +606,67 @@ merge.data.final&lt;-merge.gdp.fedstats[!(is.na(merge.gdp.fedstats$Ranking)), ]<
 <li><strong>Final Merged Data Frame</strong> - the first five rows will be displayed of the <code>merge.data.final</code> data frame to check if everything looks correct.</li>
 </ul>
 <pre class="r"><code>#Display the first 5 rows of dataframe
-head(merge.data.final,5)</code></pre>
-<pre><code>##   CountryCode              Economy                    Long.Name    GDP
-## 1         ABW                Aruba                        Aruba   2584
-## 3         AFG          Afghanistan Islamic State of Afghanistan  20497
-## 4         AGO               Angola  People's Republic of Angola 114147
-## 5         ALB              Albania          Republic of Albania  12648
-## 6         ARE United Arab Emirates         United Arab Emirates 348595
-##           Income.Group Ranking
-## 1 High income: nonOECD     161
-## 3           Low income     105
-## 4  Lower middle income      60
-## 5  Upper middle income     125
-## 6 High income: nonOECD      32</code></pre>
+knitr::kable(head(merge.data.final,5))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">CountryCode</th>
+<th align="left">Economy</th>
+<th align="left">Long.Name</th>
+<th align="right">GDP</th>
+<th align="left">Income.Group</th>
+<th align="right">Ranking</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">ABW</td>
+<td align="left">Aruba</td>
+<td align="left">Aruba</td>
+<td align="right">2584</td>
+<td align="left">High income: nonOECD</td>
+<td align="right">161</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">AFG</td>
+<td align="left">Afghanistan</td>
+<td align="left">Islamic State of Afghanistan</td>
+<td align="right">20497</td>
+<td align="left">Low income</td>
+<td align="right">105</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">AGO</td>
+<td align="left">Angola</td>
+<td align="left">People’s Republic of Angola</td>
+<td align="right">114147</td>
+<td align="left">Lower middle income</td>
+<td align="right">60</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">ALB</td>
+<td align="left">Albania</td>
+<td align="left">Republic of Albania</td>
+<td align="right">12648</td>
+<td align="left">Upper middle income</td>
+<td align="right">125</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">ARE</td>
+<td align="left">United Arab Emirates</td>
+<td align="left">United Arab Emirates</td>
+<td align="right">348595</td>
+<td align="left">High income: nonOECD</td>
+<td align="right">32</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li><strong>Output the Final Merged Data Frame into a csv file</strong></li>
 </ul>
@@ -462,26 +696,74 @@ dim(merge.data.final)</code></pre>
 </ul>
 <pre class="r"><code>#Sort merged data frame by ascending order &amp; select rows 12-13 and all columns 
 sort.gdp &lt;-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last = TRUE),][12:13,] 
-sort.gdp[,c(&quot;CountryCode&quot;,&quot;Long.Name&quot;,&quot;Ranking&quot;,&quot;GDP&quot;)] #only display the identified columns</code></pre>
-<pre><code>##     CountryCode           Long.Name Ranking GDP
-## 75          GRD             Grenada     178 767
-## 102         KNA St. Kitts and Nevis     178 767</code></pre>
+knitr::kable(sort.gdp[,c(&quot;CountryCode&quot;,&quot;Long.Name&quot;,&quot;Ranking&quot;,&quot;GDP&quot;)]) #only display the identified columns</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">CountryCode</th>
+<th align="left">Long.Name</th>
+<th align="right">Ranking</th>
+<th align="right">GDP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">75</td>
+<td align="left">GRD</td>
+<td align="left">Grenada</td>
+<td align="right">178</td>
+<td align="right">767</td>
+</tr>
+<tr class="even">
+<td align="left">102</td>
+<td align="left">KNA</td>
+<td align="left">St. Kitts and Nevis</td>
+<td align="right">178</td>
+<td align="right">767</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Question #3: What are the average GDP rankings for the “High income: OECD” and “High income: nonOECD” groups?</strong></p>
 <ul>
-<li><p>For this question, the merged data set was grouped by “Income.Group” and then the average of the “Ranking” column was taken for the respected groups. All five income groups and the corresponding average rank of the aggregated data frame are shown in the code output below.</p>
-<em>Average Ranking per Income Group:</em></li>
-<li>High income:OECD = 32.97</li>
-<li><p>High income:nonOECD = 91.91</p></li>
+<li>For this question, the merged data set was grouped by “Income.Group” and then the average of the “Ranking” column was taken for the respected groups. All five income groups and the corresponding average rank of the aggregated data frame are shown in the code output below.</li>
 </ul>
+<p><em>Average Ranking per Income Group:</em></p>
+<p>High income:OECD = 32.97</p>
+<p>High income:nonOECD = 91.91</p>
 <pre class="r"><code>#Aggregrate data frame by Income.Group and take the mean rankings
 merge.data.agg &lt;- ddply(merge.data.final, .(Income.Group), summarize,  Ranking=mean(Ranking))
-merge.data.agg</code></pre>
-<pre><code>##           Income.Group   Ranking
-## 1 High income: nonOECD  91.91304
-## 2    High income: OECD  32.96667
-## 3           Low income 133.72973
-## 4  Lower middle income 107.70370
-## 5  Upper middle income  92.13333</code></pre>
+knitr::kable(merge.data.agg)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Income.Group</th>
+<th align="right">Ranking</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">High income: nonOECD</td>
+<td align="right">91.91304</td>
+</tr>
+<tr class="even">
+<td align="left">High income: OECD</td>
+<td align="right">32.96667</td>
+</tr>
+<tr class="odd">
+<td align="left">Low income</td>
+<td align="right">133.72973</td>
+</tr>
+<tr class="even">
+<td align="left">Lower middle income</td>
+<td align="right">107.70370</td>
+</tr>
+<tr class="odd">
+<td align="left">Upper middle income</td>
+<td align="right">92.13333</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Question #4: Plot the GDP for all of the countries. Use ggplot2 to color your plot by Income Group.</strong></p>
 <ul>
 <li>The Gross Domestic Product vs Income Group scatter plot is generated from the below code block. One observation drawn from the scatter plot (top) or the box plot (bottom) is that the within group standard deviation is the greatest for the lower middle income and upper middle income groups. Furthermore, the interquartile range for the low income group is the smallest.</li>
@@ -521,23 +803,69 @@ merge.data.final$Group &lt;- cut(merge.data.final$Ranking,breaks=5)
 #take the quantiles and income.group from the merge data file and create a table
 quant.table&lt;-table(merge.data.final$Income.Group, merge.data.final$Group)
 #return table
-quant.table</code></pre>
-<pre><code>##                       
-##                        (0.811,38.8] (38.8,76.6] (76.6,114] (114,152]
-##                                   0           0          0         0
-##   High income: nonOECD            4           5          8         4
-##   High income: OECD              18          10          1         1
-##   Low income                      0           1          9        16
-##   Lower middle income             5          13         12         8
-##   Upper middle income            11           9          8         8
-##                       
-##                        (152,190]
-##                                0
-##   High income: nonOECD         2
-##   High income: OECD            0
-##   Low income                  11
-##   Lower middle income         16
-##   Upper middle income          9</code></pre>
+knitr::kable(quant.table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">(0.811,38.8]</th>
+<th align="right">(38.8,76.6]</th>
+<th align="right">(76.6,114]</th>
+<th align="right">(114,152]</th>
+<th align="right">(152,190]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">High income: nonOECD</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">High income: OECD</td>
+<td align="right">18</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Low income</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">16</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">Lower middle income</td>
+<td align="right">5</td>
+<td align="right">13</td>
+<td align="right">12</td>
+<td align="right">8</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="left">Upper middle income</td>
+<td align="right">11</td>
+<td align="right">9</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="conclusion" class="section level3">
 <h3><strong>Conclusion</strong></h3>
