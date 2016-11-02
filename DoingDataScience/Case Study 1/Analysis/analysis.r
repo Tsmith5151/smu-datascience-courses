@@ -2,9 +2,9 @@
 ########### Questions ###################
 #########################################
 
-source("../Data/gather.r") #Read R code from merge.r
-source("../Data/tidy.r") #Read R code from merge.r
-source("../Data/merge.r") #Read R code from merge.r
+source("Data/gather.r") #Read R code from merge.r
+source("Data/tidy.r") #Read R code from merge.r
+source("Data/merge.r") #Read R code from merge.r
 
 #Question:1 Number of Matches
 # Returns the total mataches between fedstats and gpd when merging on CountryCode

@@ -1,8 +1,8 @@
-source("gather.r") #Read r code from gather.r
+source("Data/gather.r") #Read r code from gather.r
 
 #########################################
 #Read FEDSTATS Dataset into datframe
-fedstats.raw <- read.csv("FEDSTATS_Country.raw.csv",header=TRUE)
+fedstats.raw <- read.csv("Data/FEDSTATS_Country.raw.csv",header=TRUE)
 
 #Names of Columns
 names(fedstats.raw)
@@ -24,7 +24,7 @@ colSums(is.na(fedstats))
 
 #########################################
 #Read GDP Dataset into dataframe
-gdp.raw <- read.csv("FGDP.raw.csv",header=TRUE,skip=3)
+gdp.raw <- read.csv("Data/FGDP.raw.csv",header=TRUE,skip=3)
 
 #Names of Columns
 names(gdp.raw)

@@ -1,4 +1,4 @@
-source("tidy.r") #Read R code from tidy.r
+source("Data/tidy.r") #Read R code from tidy.r
 
 #merge data on country shortcode
 merge.gdp.fedstats <- merge(gdp,fedstats,by="CountryCode")

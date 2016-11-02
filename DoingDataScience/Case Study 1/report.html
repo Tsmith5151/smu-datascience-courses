@@ -149,8 +149,9 @@ library(downloader)</code></pre>
 </div>
 <div id="set-working-directory" class="section level3">
 <h3><strong>Set Working Directory</strong></h3>
-<p><strong>Note:</strong> The working directory should be set to: “/Case Study 1/Data”:</p>
-<pre class="r"><code>dir &lt;- &quot;/Users/Case Study 1/Data&quot; #file path
+<p><strong>Note:</strong> The working directory should be set to the root directory: “Case Study 1”:</p>
+<pre class="r"><code>#Example:
+dir &lt;- &quot;/Users/Case Study 1&quot; #file path
 setwd(dir) #set working directory</code></pre>
 </div>
 <div id="run-source-code" class="section level3">
@@ -164,20 +165,20 @@ setwd(dir) #set working directory</code></pre>
 </ul>
 <pre class="r"><code>#Read R code from analysis.r -- linked to gather, tidy, merge, and analysis 
 #Can execute the entire R script from the code below:
-source(&quot;../Analysis/analysis.r&quot;)</code></pre>
+source(&quot;Analysis/analysis.r&quot;)</code></pre>
 </div>
 <div id="downloading-the-dataset" class="section level3">
 <h3><strong>Downloading the Dataset</strong></h3>
 <ul>
-<li><p>There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that <code>destfile</code> refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the working directory to <code>Case Study 1/Data</code>. The source code for downloading the data from the World Bank’s website and saving to the “Data” directory can be found in the <code>gather.r</code> file.</p></li>
+<li><p>There are two options when downloading both data sets. First option is shown below where we can specify the URL link to the source and then download the file directly from the website. Furthermore, note that <code>destfile</code> refers to directory the file will be stored in along with the name of the file (i.e. GDP.raw.csv). Again, the important piece to remember here is setting the working directory to the root directory <code>Case Study 1</code>. The source code for downloading the data from the World Bank’s website and saving to the “Data” directory can be found in the <code>gather.r</code> file.</p></li>
 <li><p><strong>Note:</strong> The data can be downloaded by executing the <code>analysis.r</code> file as discussed in the previous section. The <a href="http://stat.ethz.ch/R-manual/R-devel/library/utils/html/download.file.html">download</a> function utilized in the <code>gather.r</code> file to download the two data sets from the internet is shown below:</p></li>
 </ul>
 <pre class="r"><code>#Download Data GDP Ranking:
 url&lt;-&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv&quot; #URL to data
-download(url,destfile=&quot;FEDSTATS_Country.raw.csv&quot;) #download file and save it to Data directory</code></pre>
+download(url,destfile=&quot;Data/FEDSTATS_Country.raw.csv&quot;) #download file and save it to Data directory</code></pre>
 <pre class="r"><code>#Download Educational Data:
 url&lt;-&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv&quot; #URL to data
-download(url,destfile=&quot;FGDP.raw.csv&quot;) #download file and save it to Data directory</code></pre>
+download(url,destfile=&quot;Data/FGDP.raw.csv&quot;) #download file and save it to Data directory</code></pre>
 <ul>
 <li>The second option is to download the file directly from <a href="http://www.worldbank.org/"><code>The World Bank</code></a> website directly and then move the file from the local download directory to the “Data” directory (i.e. a sub-directory of “Case Study 1”).</li>
 </ul>
@@ -193,7 +194,7 @@ download(url,destfile=&quot;FGDP.raw.csv&quot;) #download file and save it to Da
 <li><strong>Explore the Data</strong>: In this section, we will take a look at the GDP data set (i.e. <code>FGDP.raw.csv</code>). Before transforming the data, let’s examine the raw data first. The downloaded csv file will need to be read into a data frame, which is a convenient way of storing large data sets in a table format.</li>
 </ul>
 <pre class="r"><code>#Read GDP Dataset into dataframe
-gdp.raw &lt;- read.csv(&quot;FGDP.raw.csv&quot;,header=TRUE,skip=3)</code></pre>
+gdp.raw &lt;- read.csv(&quot;Data/FGDP.raw.csv&quot;,header=TRUE,skip=3)</code></pre>
 <ul>
 <li>The dimensions of the raw GDP data consist of 10 columns and 327 rows.</li>
 </ul>
@@ -397,7 +398,7 @@ head(colSums(is.na(gdp)))</code></pre>
 <li><strong>Explore the Data</strong>: Now, let’s take a look at the Educational data (i.e. <code>FEDSTATS_Country.raw</code>). Likewise, the downloaded csv file will be read into a data frame; note the raw data file will be preserved by assigning it to a new object “fedstats”.</li>
 </ul>
 <pre class="r"><code>#Read FEDSTATS Dataset into datframe
-fedstats.raw &lt;- read.csv(&quot;FEDSTATS_Country.raw.csv&quot;,header=TRUE)
+fedstats.raw &lt;- read.csv(&quot;Data/FEDSTATS_Country.raw.csv&quot;,header=TRUE)
 
 #Create New DataFrame From Raw
 fedstats&lt;-fedstats.raw</code></pre>
@@ -411,135 +412,69 @@ dim(fedstats.raw)</code></pre>
 <li>The output from this code block will return the column name of each feature and the corresponding number of observations containing NA (per column).</li>
 </ul>
 <pre class="r"><code>#The number of N/A per column
-knitr::kable(colSums(is.na(fedstats)))</code></pre>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left">CountryCode</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Long.Name</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Income.Group</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Region</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Lending.category</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Other.groups</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Currency.Unit</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Latest.population.census</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Latest.household.survey</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Special.Notes</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">National.accounts.base.year</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">National.accounts.reference.year</td>
-<td align="right">197</td>
-</tr>
-<tr class="odd">
-<td align="left">System.of.National.Accounts</td>
-<td align="right">149</td>
-</tr>
-<tr class="even">
-<td align="left">SNA.price.valuation</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Alternative.conversion.factor</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">PPP.survey.year</td>
-<td align="right">89</td>
-</tr>
-<tr class="odd">
-<td align="left">Balance.of.Payments.Manual.in.use</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">External.debt.Reporting.status</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">System.of.trade</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Government.Accounting.concept</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">IMF.data.dissemination.standard</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Source.of.most.recent.Income.and.expenditure.data</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Vital.registration.complete</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">Latest.agricultural.census</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Latest.industrial.data</td>
-<td align="right">139</td>
-</tr>
-<tr class="even">
-<td align="left">Latest.trade.data</td>
-<td align="right">46</td>
-</tr>
-<tr class="odd">
-<td align="left">Latest.water.withdrawal.data</td>
-<td align="right">82</td>
-</tr>
-<tr class="even">
-<td align="left">X2.alpha.code</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">WB.2.code</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">Table.Name</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">Short.Name</td>
-<td align="right">0</td>
-</tr>
-</tbody>
-</table>
+colSums(is.na(fedstats))</code></pre>
+<pre><code>##                                       CountryCode 
+##                                                 0 
+##                                         Long.Name 
+##                                                 0 
+##                                      Income.Group 
+##                                                 0 
+##                                            Region 
+##                                                 0 
+##                                  Lending.category 
+##                                                 0 
+##                                      Other.groups 
+##                                                 0 
+##                                     Currency.Unit 
+##                                                 0 
+##                          Latest.population.census 
+##                                                 0 
+##                           Latest.household.survey 
+##                                                 0 
+##                                     Special.Notes 
+##                                                 0 
+##                       National.accounts.base.year 
+##                                                 0 
+##                  National.accounts.reference.year 
+##                                               197 
+##                       System.of.National.Accounts 
+##                                               149 
+##                               SNA.price.valuation 
+##                                                 0 
+##                     Alternative.conversion.factor 
+##                                                 0 
+##                                   PPP.survey.year 
+##                                                89 
+##                 Balance.of.Payments.Manual.in.use 
+##                                                 0 
+##                    External.debt.Reporting.status 
+##                                                 0 
+##                                   System.of.trade 
+##                                                 0 
+##                     Government.Accounting.concept 
+##                                                 0 
+##                   IMF.data.dissemination.standard 
+##                                                 0 
+## Source.of.most.recent.Income.and.expenditure.data 
+##                                                 0 
+##                       Vital.registration.complete 
+##                                                 0 
+##                        Latest.agricultural.census 
+##                                                 0 
+##                            Latest.industrial.data 
+##                                               139 
+##                                 Latest.trade.data 
+##                                                46 
+##                      Latest.water.withdrawal.data 
+##                                                82 
+##                                     X2.alpha.code 
+##                                                 1 
+##                                         WB.2.code 
+##                                                 1 
+##                                        Table.Name 
+##                                                 0 
+##                                        Short.Name 
+##                                                 0</code></pre>
 <p><br></p>
 <ul>
 <li><strong>Data Cleaning</strong> - For this data set, there were no major steps necessary to tidy up the data. Although, given that the primary columns of interest are “CountryCode”, “Long.Name”, and “Income.Group”, the remaining attributes will be dropped from the data frame.</li>
@@ -732,6 +667,11 @@ knitr::kable(head(merge.data.final,5))</code></pre>
 </tr>
 </tbody>
 </table>
+<ul>
+<li><strong>Output the Final Merged Data Frame into a csv file</strong></li>
+</ul>
+<pre class="r"><code>#write the final data frame to a csv file with header names
+write.csv(merge.data.final, file = &quot;Data/TidyData.csv&quot;,row.names=TRUE)</code></pre>
 <p><br></p>
 </div>
 <div id="statistical-analysis" class="section level3">
@@ -756,17 +696,41 @@ dim(merge.data.final)</code></pre>
 </ul>
 <pre class="r"><code>#Sort merged data frame by ascending order &amp; select rows 12-13 and all columns 
 sort.gdp &lt;-merge.data.final[order(merge.data.final$GDP,decreasing=FALSE,na.last = TRUE),][12:13,] 
-sort.gdp[,c(&quot;CountryCode&quot;,&quot;Long.Name&quot;,&quot;Ranking&quot;,&quot;GDP&quot;)] #only display the identified columns</code></pre>
-<pre><code>##     CountryCode           Long.Name Ranking GDP
-## 75          GRD             Grenada     178 767
-## 102         KNA St. Kitts and Nevis     178 767</code></pre>
+knitr::kable(sort.gdp[,c(&quot;CountryCode&quot;,&quot;Long.Name&quot;,&quot;Ranking&quot;,&quot;GDP&quot;)]) #only display the identified columns</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">CountryCode</th>
+<th align="left">Long.Name</th>
+<th align="right">Ranking</th>
+<th align="right">GDP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">75</td>
+<td align="left">GRD</td>
+<td align="left">Grenada</td>
+<td align="right">178</td>
+<td align="right">767</td>
+</tr>
+<tr class="even">
+<td align="left">102</td>
+<td align="left">KNA</td>
+<td align="left">St. Kitts and Nevis</td>
+<td align="right">178</td>
+<td align="right">767</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Question #3: What are the average GDP rankings for the “High income: OECD” and “High income: nonOECD” groups?</strong></p>
 <ul>
-<li><p>For this question, the merged data set was grouped by “Income.Group” and then the average of the “Ranking” column was taken for the respected groups. All five income groups and the corresponding average rank of the aggregated data frame are shown in the code output below.</p>
-<em>Average Ranking per Income Group:</em></li>
-<li>High income:OECD = 32.97</li>
-<li><p>High income:nonOECD = 91.91</p></li>
+<li>For this question, the merged data set was grouped by “Income.Group” and then the average of the “Ranking” column was taken for the respected groups. All five income groups and the corresponding average rank of the aggregated data frame are shown in the code output below.</li>
 </ul>
+<p><em>Average Ranking per Income Group:</em></p>
+<p>High income:OECD = 32.97</p>
+<p>High income:nonOECD = 91.91</p>
 <pre class="r"><code>#Aggregrate data frame by Income.Group and take the mean rankings
 merge.data.agg &lt;- ddply(merge.data.final, .(Income.Group), summarize,  Ranking=mean(Ranking))
 knitr::kable(merge.data.agg)</code></pre>
