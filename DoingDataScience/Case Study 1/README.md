@@ -5,12 +5,18 @@
 <img src= "http://sportspagedfw.com/wp-content/uploads/2013/03/SMU-Logo1.jpg">
 </p>
 
+#### Documentation
+
+- To run the source code, set the working directory to the root directory of this project, "Case Study 1". Enter `source("Analysis/analysis.r")` into the R console and the code will run. `analysis.r` is linked to the gathering of data, tidying/cleaning data, and merging data r files and thus can simply be executed from one single file, analysis.r. Alternatively, the source code can be executed in the Rmd file as well; note: the working directory should be set to the root node. 
+
 #### Data Source
 - Load the Gross Domestic Product data for the 190 ranked countries in this data set:
 https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv
 
 - Load the educational data from this data set:
 https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv
+
+- The final cleaned/merged data frame is located in the `Data` subdirectory: [TidyData.csv](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Data/TidyData.csv)
 
 #### Task: Tidy, Merge, and Perform Statistical Analysis
 - Merge the data based on the country shortcode. How many of the IDs match?
@@ -36,7 +42,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv
  - [tidy.r](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Data/tidy.r): takes the two data frames and cleans the rows/columns to prepare for statistical analysis
  
  - [merge.r](https://github.com/Tsmith5151/DataScience-SMU/blob/master/DoingDataScience/Case%20Study%201/Data/merge.r): merges two data frames utilizing the unique key identifier "CountryCode"
-
+ 
 
 ### Reference:
 Adapted from the Case Study Report Help website of the University of New South Wales School of Engineering: https://student.unsw.edu.au/writing-case-study
