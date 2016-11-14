@@ -5,8 +5,7 @@ Trace Smith
 <br>
 
 
-
-##### Download Data
+#### Download Data
 
 - [Data Source](http://stat.columbia.edu/~rachel/datasets)
 
@@ -29,8 +28,6 @@ mydownload <- function(start,end){
 #call the download function and pass the range for file names
 mydownload(1,1)
 ```
-
-<br>
 
 #### Read CSV file into Data.Frame
 
@@ -60,7 +57,7 @@ df<-mydata("Data/nyt",1,1)
 
 ```
 ## Dimensions: 916882 5NULL
-## Run Time: 1.895 0.064 1.965 0 0NULL
+## Run Time: 1.771 0.05 1.823 0 0NULL
 ```
 
 
@@ -73,24 +70,20 @@ df<-df[!(is.na(df$Age)), ]
 ```r
 #Remove any row observations with age = 0
 df <- df[-which(df$Age == 0),]
-head(df,10)
+head(df)
 ```
 
 ```
-##    Age Gender Impressions Clicks Signed_In
-## 1   36      0           3      0         1
-## 2   73      1           3      0         1
-## 3   30      0           3      0         1
-## 4   49      1           3      0         1
-## 5   47      1          11      0         1
-## 6   47      0          11      1         1
-## 8   46      0           5      0         1
-## 9   16      0           3      0         1
-## 10  52      0           4      0         1
-## 12  21      0           3      0         1
+##   Age Gender Impressions Clicks Signed_In
+## 1  36      0           3      0         1
+## 2  73      1           3      0         1
+## 3  30      0           3      0         1
+## 4  49      1           3      0         1
+## 5  47      1          11      0         1
+## 6  47      0          11      1         1
 ```
 
-** Histogram** 
+**Histogram** 
 
 ```r
 #Create histogram of age distribution 
@@ -100,25 +93,24 @@ hist(df$Age,freq=FALSE,xlab="Age",col="navy",border="white",
 
 ![](LiveSession10_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
-** Create a new variable ageGroup that categorizes age into following groups: < 18, 18–24, 25–34, 35–44, 45–54, 55–64 and 65+.**
+**Create a new variable ageGroup that categorizes age into following groups: < 18, 18–24, 25–34, 35–44, 45–54, 55–64 and 65+.**
 
 
 ```r
 df$ageGroup <- cut(df$Age,c(-Inf,18,24,34,44,54,64,Inf))
 #cut function creates a factor with levels
 levels(df$ageGroup) <- c("<18","18-24","25-34","35-44","45-54","55-64","65+")
-knitr::kable(head(df,3))
+head(df,3)
 ```
 
+```
+##   Age Gender Impressions Clicks Signed_In ageGroup
+## 1  36      0           3      0         1    35-44
+## 2  73      1           3      0         1      65+
+## 3  30      0           3      0         1    25-34
+```
 
-
- Age   Gender   Impressions   Clicks   Signed_In  ageGroup 
-----  -------  ------------  -------  ----------  ---------
-  36        0             3        0           1  35-44    
-  73        1             3        0           1  65+      
-  30        0             3        0           1  25-34    
-
-** Use sub set of data called “ImpSub” where Impressions > 0 ) in your data set.**
+**Use sub set of data called “ImpSub” where Impressions > 0.**
 
 
 ```r
@@ -126,14 +118,13 @@ knitr::kable(head(df,3))
 ImpSub <- subset(df,Impressions>0)
 ```
 
-**Create a new variable called click-through-rate (CTR = click/impression).**
+**Create a new variable called click-through-rate (CTR = click/impression). Note will use ImpSub data set to do the further analysis**
 
 
 ```r
+# CTR = Clicks/No. Impressions
 ImpSub$CTR <- round(ImpSub$Clicks/ImpSub$Impressions,4)
 ```
-
-#### Using ImpSub data set to do further analysis
 
 **Plot distributions of number impressions and click-through-rate (CTR = click/impression) for the age groups.**
 
@@ -147,7 +138,7 @@ p+labs(title="Day 1: Impressions vs Age Group", # add title
 
 ![](LiveSession10_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
-** Define a new variable to segment users based on click -through-rate (CTR) behavior. CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8 **
+**Define a new variable to segment users based on click -through-rate (CTR) behavior. CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8 **
 
 
 ```r
@@ -155,7 +146,7 @@ ImpSub$CTR_Segments <- cut(ImpSub$CTR,c(0,0.2,0.4,0.6,0.8,Inf))
 levels(ImpSub$CTR_Segments) <- c("<0.20","0.20-0.40","0.40-0.60","0.60-0.80",">0.80")
 ```
 
-** Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male) **
+**Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male) **
 
 
 ```r
@@ -168,15 +159,14 @@ ImpSub$Gender[ImpSub$Gender == "1"] <- "Male"
 ```r
 sum_stats <- aggregate(ImpSub[c("Impressions","Clicks","Signed_In")],by=list(ImpSub$Gender),FUN=sum)
 colnames(sum_stats) <- c("Gender","Total Impressions","Clicks","Signed_In")
-knitr::kable(sum_stats)
+sum_stats
 ```
 
-
-
-Gender    Total Impressions   Clicks   Signed_In
--------  ------------------  -------  ----------
-Female              1534598    22384      304104
-Male                1685554    23554      334292
+```
+##   Gender Total Impressions Clicks Signed_In
+## 1 Female           1534598  22384    304104
+## 2   Male           1685554  23554    334292
+```
 
 
 ```r
@@ -196,45 +186,46 @@ head(ImpSub.Male)
 ```
 
 
-** Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In **
+**Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In **
 
 
 ```r
 sum_stats <- aggregate(ImpSub.Male[c("Impressions","Clicks","Signed_In")],by=list(ImpSub.Male$Gender),FUN=sum)
 colnames(sum_stats) <- c("Gender","Avg Impressions","Avg Clicks","Signed_In")
-knitr::kable(sum_stats)
+sum_stats
 ```
 
+```
+##   Gender Avg Impressions Avg Clicks Signed_In
+## 1   Male         1685554      23554    334292
+```
 
-
-Gender    Avg Impressions   Avg Clicks   Signed_In
--------  ----------------  -----------  ----------
-Male              1685554        23554      334292
-
-** Get the means of Impressions, Clicks, CTR and percentage of males and signed_In  by AgeGroup.**
+**Get the means of Impressions, Clicks, CTR and percentage of males and signed_In  by AgeGroup.**
 
 
 ```r
 Age_stats <- aggregate(ImpSub.Male[c("Impressions","Clicks","CTR")], by=list(ImpSub.Male$ageGroup) ,FUN=mean)
 colnames(Age_stats) <- c("AgeGroup","Impressions","Avg Clicks","CTR")
-knitr::kable(Age_stats)
+Age_stats
 ```
 
+```
+##   AgeGroup Impressions Avg Clicks         CTR
+## 1      <18    5.029481 0.13315417 0.026754646
+## 2    18-24    5.038776 0.04877788 0.009633471
+## 3    25-34    5.015252 0.05037398 0.010111808
+## 4    35-44    5.062919 0.05223223 0.010332504
+## 5    45-54    5.044957 0.05001776 0.009754010
+## 6    55-64    5.055308 0.10285355 0.020245606
+## 7      65+    5.028825 0.15280054 0.029709602
+```
+
+**Create a table of CTRGroup vs AgeGroup counts.**
 
 
-AgeGroup    Impressions   Avg Clicks         CTR
----------  ------------  -----------  ----------
-<18            5.029481    0.1331542   0.0267546
-18-24          5.038776    0.0487779   0.0096335
-25-34          5.015252    0.0503740   0.0101118
-35-44          5.062919    0.0522322   0.0103325
-45-54          5.044957    0.0500178   0.0097540
-55-64          5.055308    0.1028535   0.0202456
-65+            5.028825    0.1528005   0.0297096
-
-** Create a table of CTRGroup vs AgeGroup counts.**
-
-
+```r
+#In progress...
+```
 
 
 **One more plot you think which is important to look at.**
