@@ -2,113 +2,137 @@
 
 library(ggplot2)
 
+#Data Source: (http://stat.columbia.edu/~rachel/datasets)
+
 #Function to download each csv file from URL
 mydownload <- function(start,end){
-  num <- seq(start,end,by=1)
-  for (i in 1:length(num)){
-    string_num <- as.character(num[i])
-    url <- paste0("http://stat.columbia.edu/~rachel/datasets/nyt",string_num,".csv")
-    file <- paste0("Data/nyt",string_num,".csv")
-    download.file(url,destfile = file)
+  num <- seq(start,end,by=1) #initialize vector from start to end by 1's; 1xn dimensions
+  for (i in 1:length(num)){# iterate from 1 to length of num
+    string_num <- as.character(num[i])#convert number to character
+    url <- paste0("http://stat.columbia.edu/~rachel/datasets/nyt",string_num,".csv") #concate URL name
+    filepath <- paste0("Data/nyt",string_num,".csv") #concate file name
+    download.file(url,destfile = filepath) #download file from URL and save to filepath
   }
 }
 
+#There are 31 files from  http://stat.columbia.edu/~rachel/datasets are formatted from nyt1.csv to nyt31.csv.
+#Call the mydownload function and pass the range for file names. 
+mydownload(1,2) #download files nyt1.csv thru nyt(n).csv. 
 
-#call the download function and pass the range for file names
-mydownload(1,1)
 
-#Read CSV file into Data.Frame
+#### Read CSV file into Data.Frame
+
 mydata <- function(name,start,end){
-  t1 <- proc.time()
+  t1 <- proc.time()#starting time for code to execute
   #read first file to create variables in data frame and headers
   d1<- read.csv(paste0(name,"1",".csv",sep=""),header=TRUE)
-  num <- seq(start,end,by=1)
-  for(i in 1:length(num)){
-    string_num <- as.character(num[i])
-    file <- paste0(name,string_num,".csv",sep="")
-    d1<-rbind(d1,read.csv(file=file))
+  num <- seq(start,end,by=1)#initialize vector from start to end by 1's; 1xn dimensions
+  for(i in 1:length(num)){# iterate from 1 to length of num
+    string_num <- as.character(num[i]) #convert number to character
+    file <- paste0(name,string_num,".csv",sep="") #concate file name
+    d1<-rbind(d1,read.csv(file=file))#combine the data from each csv file into one data.frame
   }
-  total <- proc.time() - t1
-  print(cat("Dimensions:",dim(d1),sep=" "))
-  print(cat("Run Time:",total,sep=" "))
-  return(d1)
+  total <- proc.time() - t1 #total elapsed run time
+  print(cat("Dimensions:",dim(d1),sep=" ")) #dimensions of the data.frame
+  print(cat("Run Time:",total,sep=" ")) #print total run time
+  return(d1) #return the data.frame `d1`
 }
 
-#call mydata function and pass file name, start and end date:
-df<-mydata("Data/nyt",1,1)
+#Call mydata function and pass file name, start and end date. 
+#For this work, we will only look at the first 2 files.
+df<-mydata("Data/nyt",1,2)
+
+
 
 #Remove any rows with NA for Age
 df<-df[!(is.na(df$Age)), ]
 
-#Remove any row observations with age = 0
+#Remove any row observations with Age = 0
 df <- df[-which(df$Age == 0),]
-head(df,10)
+head(df)
+
 
 #Create histogram of age distribution 
 hist(df$Age,freq=FALSE,xlab="Age",col="navy",border="white",
      main="Histogram of Age")
 
-#Create a new variable ageGroup that categorizes age into following groups:
-#< 18, 18–24, 25–34, 35–44, 45–54, 55–64 and 65+.
+
+##Create a new variable ageGroup that categorizes age into following groups: < 18, 18–24, 25–34, 35–44, 45–54, 55–64 and 65+.
+
+#create new column "ageGroup" and cut the age column into different intervals
 df$ageGroup <- cut(df$Age,c(-Inf,18,24,34,44,54,64,Inf))
-#cut function creates a factor with levels
+#cut function creates a factor with levels; rename intervals
 levels(df$ageGroup) <- c("<18","18-24","25-34","35-44","45-54","55-64","65+")
-knitr::kable(head(df,3))
+head(df,3)
 
 
-#Use sub set of data called “ImpSub” where Impressions > 0 ) in your data set.
+##Use sub set of data called “ImpSub” where Impressions > 0.
   
 #Subset the data; new object "ImpSub"
 ImpSub <- subset(df,Impressions>0)
 
-#Create a new variable called click-through-rate (CTR = click/impression).
+## Create a new variable called click-through-rate (CTR = click/impression). Note will use ImpSub data set to do the further analysis
   
+# CTR = Clicks/No. Impressions
 ImpSub$CTR <- round(ImpSub$Clicks/ImpSub$Impressions,4)
 
-# Using ImpSub data set to do further analysis
 
-#Plot distributions of number impressions and click-through-rate (CTR = click/impression) for the age groups.
+## Plot distributions of number impressions and click-through-rate (CTR = click/impression) for the age groups.
+  
+#Load the ggplot2 package
+library(ggplot2)
+# plot the impressions vs ageGroup (density plot)
 p<- ggplot(ImpSub,aes(x=Impressions,colour=ageGroup)) + geom_density()
 p+labs(title="Day 1: Impressions vs Age Group", # add title
        x="Impressions",y="Density",colour="Age Group") 
 
-#Define a new variable to segment users based on click -through-rate (CTR) behavior.
-#CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8 
+## Define a new variable to segment users based on click -through-rate (CTR) behavior. CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8 
+  
+#segment users based on click -through-rate (CTR) b
 ImpSub$CTR_Segments <- cut(ImpSub$CTR,c(0,0.2,0.4,0.6,0.8,Inf))
+#cut function creates a factor with levels; rename intervals
 levels(ImpSub$CTR_Segments) <- c("<0.20","0.20-0.40","0.40-0.60","0.60-0.80",">0.80")
 
 
-#Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male) 
-
+##Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male) 
+  
 #Convert Numeric to Male/Female:
 ImpSub$Gender[ImpSub$Gender == "0"] <- "Female"
 ImpSub$Gender[ImpSub$Gender == "1"] <- "Male"
 
-sum_stats <- aggregate(ImpSub[c("Impressions","Clicks","Signed_In")],by=list(ImpSub$Gender),FUN=sum)
-colnames(sum_stats) <- c("Gender","Total Impressions","Clicks","Signed_In")
-knitr::kable(sum_stats)
-
-
-#Subset for Sign In and Males
+#Subset for Sign In (i.e. =1) and Males
 ImpSub.Male <- subset(ImpSub,Gender=="Male",Signed_In=1)
-head(ImpSub.Male)
 
-
-# Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In 
-  
+#aggregate data and count the total number of Male, Impressions, Clicks and Signed_In 
 sum_stats <- aggregate(ImpSub.Male[c("Impressions","Clicks","Signed_In")],by=list(ImpSub.Male$Gender),FUN=sum)
-colnames(sum_stats) <- c("Gender","Avg Impressions","Avg Clicks","Signed_In")
-knitr::kable(sum_stats)
+colnames(sum_stats) <- c("Gender","Total Impressions","Clicks","Signed_In") #rename columns
+sum_stats
 
-#Get the means of Impressions, Clicks, CTR and percentage of males and signed_In  by AgeGroup.
+
+## Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In 
   
+#aggregate and compute the average Age, Impressions, Clicks, CTR and percentage of males and signed_In
+sum_stats <- aggregate(ImpSub.Male[c("Impressions","Clicks","Signed_In")],by=list(ImpSub.Male$Gender),FUN=sum)
+colnames(sum_stats) <- c("Gender","Avg Impressions","Avg Clicks","Signed_In") #rename columns
+sum_stats
 
+
+## Get the means of Impressions, Clicks, CTR and percentage of males and signed_In by AgeGroup.
+  
+#aggregate and compute the average Impressions, Clicks, CTR and percentage of males and signed_In by AgeGroup
 Age_stats <- aggregate(ImpSub.Male[c("Impressions","Clicks","CTR")], by=list(ImpSub.Male$ageGroup) ,FUN=mean)
-colnames(Age_stats) <- c("AgeGroup","Impressions","Avg Clicks","CTR")
-knitr::kable(Age_stats)
+colnames(Age_stats) <- c("AgeGroup","Impressions","Avg Clicks","CTR") #rename columns
+Age_stats
 
-# Plot Males Age Group vs Avg. Click Through Rate
 
+## Create a table of CTRGroup vs AgeGroup counts.
+  
+count.group <- table(ImpSub$CTR_Segments, ImpSub$ageGroup) #table CTR_Segment vs AgeGroup
+knitr::kable(count.group) #knit table
+
+## One more plot you think which is important to look at.
+
+#plot the ageGrop vs the mean click through rate (CTR) and fill by ageGroup (bar plot)
 p <- ggplot(ImpSub.Male,aes(x=ageGroup,y=mean(CTR),fill=ageGroup)) + geom_bar(stat="identity") 
 p+labs(title="Males: Age Group vs Avg. CTR", # add title
-       x="Age Group",y="Mean CTR",colour="Age Group")  
+       x="Age Group",y="Mean CTR",colour="Age Group")  #add labels
