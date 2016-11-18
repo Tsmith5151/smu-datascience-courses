@@ -1,0 +1,22 @@
+---
+title: "Live Unit 11 Assignment"
+author: "Trace Smith"
+date: "11/17/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+a) Plot the time series. Can you identify seasonal fluctuations and/or a trend? 
+
+b) Use a classical decomposition to calculate the trend-cycle and seasonal indices. 
+
+c) Do the results support the graphical interpretation from part (a)? 
+
+d) Compute and plot the seasonally adjusted data. 
+
+e) Change one observation to be an outlier (e.g., add 500 to one observation), and recompute the seasonally adjusted data. What is the effect of the outlier? 
+
+f) Does it make any difference if the outlier is near the end rather than in the middle of the time series? 
