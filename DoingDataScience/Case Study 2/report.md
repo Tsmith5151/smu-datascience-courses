@@ -4,6 +4,7 @@ November 21, 2016
 
 
 
+
 <br>
 
 ### Question 1
@@ -37,7 +38,7 @@ run;
 
 
 ```r
-mymatrix <- matrix(c(4,1,2,5,0,1,1,3,8,2,5,2),nrow=3,ncol=4)
+mymatrix <- matrix(c(4, 1, 2, 5, 0, 1, 1, 3, 8, 2, 5, 2), nrow = 3, ncol = 4)
 print(mymatrix)
 ```
 
@@ -91,18 +92,18 @@ print x
 
 - *Tree*: an ordered factor indicating the tree on which the measurement is made. The ordering  is according to increasing maximum diameter.
 
-- *age*: a numeric vector giving the age of the tree (days since 1968/12/31) circumference: a numeric vector of trunk circumferences (mm). This is probably “circumference at breast height”, a standard measurement in forestry.
+- *age*: a numeric vector giving the age of the tree (days since 1968/12/31) circumference: a numeric vector of trunk circumferences (mm). This is probably âcircumference at breast heightâ, a standard measurement in forestry.
 
 - First, let's load the `Orange` data set into a data frame and examine the structure of the data:
 
 ```r
-#Read in Orange dataset from R into data.frame
+# Read in Orange dataset from R into data.frame
 df <- data.frame(Orange)
 ```
 
 
 ```r
-#Return first 5 rows of Orange df
+# Return first 5 rows of Orange df
 head(df)
 ```
 
@@ -118,7 +119,7 @@ head(df)
 
 
 ```r
-#get summary of Orange dataset
+# get summary of Orange dataset
 summary(df)
 ```
 
@@ -134,7 +135,7 @@ summary(df)
 
 
 ```r
-#get structure of each columns
+# get structure of each columns
 str(df$Tree)
 ```
 
@@ -162,9 +163,9 @@ str(df$circumference)
 
 
 ```r
-#aggregate data.frame by Tree and compute mean circumference
-circum.mean <- aggregate(df$circumference,by=list(df$Tree),FUN=mean)
-colnames(circum.mean) <- c("Tree","Avg Circumference")
+# aggregate data.frame by Tree and compute mean circumference
+circum.mean <- aggregate(df$circumference, by = list(df$Tree), FUN = mean)
+colnames(circum.mean) <- c("Tree", "Avg Circumference")
 circum.mean
 ```
 
@@ -179,9 +180,9 @@ circum.mean
 
 
 ```r
-#aggregate data.frame by Tree and compute median circumference
-circum.median <- aggregate(df$circumference,by=list(df$Tree),FUN=median)
-colnames(circum.median) <- c("Tree","Med. Circumference")
+# aggregate data.frame by Tree and compute median circumference
+circum.median <- aggregate(df$circumference, by = list(df$Tree), FUN = median)
+colnames(circum.median) <- c("Tree", "Med. Circumference")
 circum.median
 ```
 
@@ -198,37 +199,37 @@ circum.median
 
 
 ```r
-#Load ggplot2
+# Load ggplot2
 library(ggplot2)
 
-#Scatter plot 
-p <- ggplot(df) + geom_point(aes(y=df$circumference,x=df$age,colour=df$Tree)) +
-  scale_colour_hue(l=80, c=150)
-p + labs(title="Scatter Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
-         colour="Tree")
+# Scatter plot
+p <- ggplot(df) + geom_point(aes(y = df$circumference, x = df$age, colour = df$Tree)) + 
+    scale_colour_hue(l = 80, c = 150)
+p + labs(title = "Scatter Plot \n Age vs Circumference by Tree", x = "Age", y = "Circumference", 
+    colour = "Tree")
 ```
 
-![](report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+<img src="report_files/figure-html/unnamed-chunk-8-1.png" width="1000px" />
 
 
 ```r
 # Line plot
-p <- ggplot(df,aes(y=df$circumference,x=df$age,colour=df$Tree)) + geom_point() +
-  geom_line(size=1,alpha=0.8) + scale_colour_hue(h=c(180, 270))
-p + labs(title="Line Plot \n Age vs Circumference by Tree",x="Age",y="Circumference",
-         colour="Tree")
+p <- ggplot(df, aes(y = df$circumference, x = df$age, colour = df$Tree)) + geom_point() + 
+    geom_line(size = 1, alpha = 0.8) + scale_colour_hue(h = c(180, 270))
+p + labs(title = "Line Plot \n Age vs Circumference by Tree", x = "Age", y = "Circumference", 
+    colour = "Tree")
 ```
 
-![](report_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+<img src="report_files/figure-html/unnamed-chunk-9-1.png" width="1000px" />
 
 
 - **c) Display the trunk circumferences on a comparative boxplot against tree. Be sure you order the boxplots in the increasing order of maximum diameter.**
 
 
 ```r
-#Determine the max circum by each group and reorder the levels accordingly 
-circum.max <- aggregate(df$circumference,by=list(df$Tree),FUN=max)#aggregate for max circum
-colnames(circum.max) <- c("Tree","Max Circum.") #rename columns
+# Determine the max circum by each group and reorder the levels accordingly
+circum.max <- aggregate(df$circumference, by = list(df$Tree), FUN = max)  #aggregate for max circum
+colnames(circum.max) <- c("Tree", "Max Circum.")  #rename columns
 circum.max
 ```
 
@@ -243,7 +244,7 @@ circum.max
 
 
 ```r
-factor(df$Tree,c("3","1","5","2","4")) #reorder the boxplot for max circum. by tree
+factor(df$Tree, c("3", "1", "5", "2", "4"))  #reorder the boxplot for max circum. by tree
 ```
 
 ```
@@ -253,29 +254,29 @@ factor(df$Tree,c("3","1","5","2","4")) #reorder the boxplot for max circum. by t
 
 
 ```r
-p<-ggplot(df,aes(x=Tree,y=circumference))+ geom_boxplot(aes(fill=Tree))# ggplot: boxplot 
-p + labs(title="Box Plot: Trunk Circumference", y="Circumference",x="Tree")
+p <- ggplot(df, aes(x = Tree, y = circumference)) + geom_boxplot(aes(fill = Tree))  # ggplot: boxplot 
+p + labs(title = "Box Plot: Trunk Circumference", y = "Circumference", x = "Tree")
 ```
 
-![](report_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+<img src="report_files/figure-html/unnamed-chunk-12-1.png" width="1000px" />
 
 <br>
 
 ### Question 4
 
-- **1.)	First, d ownload “Temp” data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
+- **1.)	First, d ownload âTempâ data set. Find the difference between the maximum and the minimum monthly average temperatures for each country and report/visualize top 20 countries with the maximum differences for the period since 1900.**
 
 
-- **2.) Select a subset of data called “UStemp” where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
+- **2.) Select a subset of data called âUStempâ where US land temperatures from 01/01/1990 in Temp data. Use UStemp dataset to answer the followings.**
 
-  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (°F).**
+  - **a) Create a new column to display the monthly average land temperatures in Fahrenheit (Â°F).**
   
   - **b) Calculate average land temperature by year and plot it. The original file has the average land temperature by month.** 
   
   - **c) Calculate the one year difference of average land temperature by year and provide the maximum difference (value) with corresponding two years.**
 
 
-- **3.) Download “CityTemp” data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
+- **3.) Download âCityTempâ data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.**
 
 - **4.) Compare the two graphs in (i) and (iii)  and comment it.**
 

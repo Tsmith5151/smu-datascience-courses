@@ -8,8 +8,13 @@ output:
 subtitle: "Various Coding Problems"
 ---
 
+
 ```{r setup, include=FALSE}
+library(knitr)
+library(formatR)
 knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+opts_chunk$set(out.width='1000px', dpi=300)
 ```
 
 <br>
@@ -25,15 +30,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{}
 proc iml;
 /*create 3x4 matrix*/
+reset print;
 x={4 5 1 2,
    1 0 3 5,
    2 1 8 2};
-run;
-create mymatrix from x[colname={"a","b","c","d"}];
-append from x;
-close mymatrix;
-proc print data=mymatrix;
-run;
+quit;
 ```
 
 - SAS output for X matrix shown below:
