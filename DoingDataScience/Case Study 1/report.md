@@ -1,9 +1,6 @@
 # Case Study 1
 Trace Smith  
 November 4, 2016  
-
-
-
 <br>
 
 ### **Introduction**
@@ -30,7 +27,6 @@ GDP?
 library(plyr)
 library(ggplot2)
 library(downloader)
-library(xtable)
 ```
 
 ### **Set Working Directory**
@@ -568,8 +564,6 @@ p+labs(title="GDP vs Income Group", # add title
 
 
 ```r
-library(pander)
-panderOptions('table.split.table', Inf)
 #convert Ranking column into numeric -- initially a factor
 merge.data.final$Ranking <- as.numeric(as.character(merge.data.final$Ranking))
 #divide the numeric vector into 5 break points (i.e. quantiles)
@@ -577,25 +571,27 @@ merge.data.final$Group <- cut(merge.data.final$Ranking,breaks=5)
 #take the quantiles and income.group from the merge data file and create a table
 quant.table<-table(merge.data.final$Income.Group, merge.data.final$Group)
 #return table
-pander(quant.table)
+quant.table
 ```
 
-
---------------------------------------------------------------------------------------------
-          &nbsp;            (0.811,38.8]   (38.8,76.6]   (76.6,114]   (114,152]   (152,190] 
--------------------------- -------------- ------------- ------------ ----------- -----------
-                                 0              0            0            0           0     
-
- **High income: nonOECD**        4              5            8            4           2     
-
-  **High income: OECD**          18            10            1            1           0     
-
-      **Low income**             0              1            9           16          11     
-
- **Lower middle income**         5             13            12           8          16     
-
- **Upper middle income**         11             9            8            8           9     
---------------------------------------------------------------------------------------------
+```
+##                       
+##                        (0.811,38.8] (38.8,76.6] (76.6,114] (114,152]
+##                                   0           0          0         0
+##   High income: nonOECD            4           5          8         4
+##   High income: OECD              18          10          1         1
+##   Low income                      0           1          9        16
+##   Lower middle income             5          13         12         8
+##   Upper middle income            11           9          8         8
+##                       
+##                        (152,190]
+##                                0
+##   High income: nonOECD         2
+##   High income: OECD            0
+##   Low income                  11
+##   Lower middle income         16
+##   Upper middle income          9
+```
 
 ### **Conclusion**
 
