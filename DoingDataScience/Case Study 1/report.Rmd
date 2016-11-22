@@ -9,11 +9,6 @@ output:
   word_document: default
 subtitle: Analyzing the GDP of The Top 190 Countries
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 <br>
 
 ### **Introduction**
