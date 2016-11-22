@@ -2,6 +2,9 @@
 **MSDS 6306 DOING DATA SCIENCE**  
 
 
+11/22/2016  
+
+
 "Trace Smith & Damon Resnick"
 
 <p align="center">
