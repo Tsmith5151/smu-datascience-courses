@@ -2,6 +2,8 @@
 Trace Smith  
 November 4, 2016  
 
+
+
 <br>
 
 ### **Introduction**
@@ -28,7 +30,7 @@ GDP?
 library(plyr)
 library(ggplot2)
 library(downloader)
-library(knitr)
+library(xtable)
 ```
 
 ### **Set Working Directory**
@@ -566,6 +568,8 @@ p+labs(title="GDP vs Income Group", # add title
 
 
 ```r
+library(pander)
+panderOptions('table.split.table', Inf)
 #convert Ranking column into numeric -- initially a factor
 merge.data.final$Ranking <- as.numeric(as.character(merge.data.final$Ranking))
 #divide the numeric vector into 5 break points (i.e. quantiles)
@@ -573,71 +577,25 @@ merge.data.final$Group <- cut(merge.data.final$Ranking,breaks=5)
 #take the quantiles and income.group from the merge data file and create a table
 quant.table<-table(merge.data.final$Income.Group, merge.data.final$Group)
 #return table
-kable(quant.table,format="html")
+pander(quant.table)
 ```
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> (0.811,38.8] </th>
-   <th style="text-align:right;"> (38.8,76.6] </th>
-   <th style="text-align:right;"> (76.6,114] </th>
-   <th style="text-align:right;"> (114,152] </th>
-   <th style="text-align:right;"> (152,190] </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> High income: nonOECD </td>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 8 </td>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> High income: OECD </td>
-   <td style="text-align:right;"> 18 </td>
-   <td style="text-align:right;"> 10 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Low income </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 9 </td>
-   <td style="text-align:right;"> 16 </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Lower middle income </td>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 8 </td>
-   <td style="text-align:right;"> 16 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Upper middle income </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 9 </td>
-   <td style="text-align:right;"> 8 </td>
-   <td style="text-align:right;"> 8 </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-</tbody>
-</table>
+
+--------------------------------------------------------------------------------------------
+          &nbsp;            (0.811,38.8]   (38.8,76.6]   (76.6,114]   (114,152]   (152,190] 
+-------------------------- -------------- ------------- ------------ ----------- -----------
+                                 0              0            0            0           0     
+
+ **High income: nonOECD**        4              5            8            4           2     
+
+  **High income: OECD**          18            10            1            1           0     
+
+      **Low income**             0              1            9           16          11     
+
+ **Lower middle income**         5             13            12           8          16     
+
+ **Upper middle income**         11             9            8            8           9     
+--------------------------------------------------------------------------------------------
 
 ### **Conclusion**
 
