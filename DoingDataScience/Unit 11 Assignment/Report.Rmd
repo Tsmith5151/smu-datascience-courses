@@ -1,8 +1,10 @@
 ---
 title: "Live Unit 11 Assignment"
 author: "Angela Horacek, James Gage, Trace Smith"
-date: "11/17/2016"
-output: 
+date: "11/22/2016"
+output:
+  word_document: default
+  pdf_document: default
   html_document:
     keep_md: yes
 ---
@@ -64,18 +66,25 @@ lines(fit$time.series[,2],col="red",ylab="Trend",lwd=2.5)
 
 **e) Change one observation to be an outlier (e.g., add 500 to one observation), and recompute the seasonally adjusted data. What is the effect of the outlier?**
 
-- **Check this.....**
 ```{r}
-#add outlier to data
-#ts is used to create time-series objects
-hsales3 <- ts(c(hsales[1:275],hsales[5]+100), end=c(1995,11),
-              start=c(1973,1),frequency=15)
+#start year=1973, frequency= 12 months
+hsales2 <- ts(c(hsales[1:137],hsales[138]+500,hsales[139:275]),start=c(1973,1),frequency=12)
+plot(hsales2, col="purple",lwd=1.5, main="Sales of US One Family Housing\n(Outlier in Middle)",
+     ylab="New Single Family House Sales", xlab="Years")
 ```
 
+- Recompute the seasonally adjusted data.
 ```{r}
-plot(hsales3,col="purple",lwd=1.5,
-     main="Modify 'hsales' Data with Outlier",
-     xlab = "Time", ylab="Monthly Sales")
+ fit2 <- stl(hsales2, s.window=5)
+plot(fit2, col="brown",lwd=1.5, main="Seasonal Adjusted Data\n(Outlier in Middle)")
+```
+
+- Plot of hsales2 with the seasonal adjusted data (green line)
+```{r}
+plot(hsales2, col="gray", lwd=1.5,
+     main="Sales of US Single Family Housing(Outlier in Middle)\nwith Seasonal Adjusted Data(green line)",
+     ylab="New Single Family House Sales", xlab="Years")
+lines(fit2$time.series[,2],col="green",lwd=1.5, ylab="Trend")
 ```
 
 - The outlier observation in the middle of the data increases the magnitude of the the seasonally adjusted data not only at that particular time but also on both sides of that time. Similarly, the trend line also peaks at that year pulling the trend curve up around that time distorting the sinusodial wave pattern.
@@ -91,7 +100,7 @@ hsales4 <- ts(c(hsales[1:260],hsales[261]+500, hsales[262:275]),start=c(1973,1),
 - Plot the time series: 
 
 ```{r}
-plot(hsales4, col="orange",main="Sales of US One Family Housing\n(Outlier Close to End)",
+plot(hsales4, lwd=1.5, col="orange",main="Sales of US One Family Housing\n(Outlier Close to End)",
 ylab="New Single Family House Sales", xlab="Years")
 ```
 
