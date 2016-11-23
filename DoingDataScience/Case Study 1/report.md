@@ -1,6 +1,6 @@
 # Case Study 1
 Trace Smith  
-November 4, 2016  
+November 5, 2016  
 <br>
 
 ### **Introduction**
