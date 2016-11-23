@@ -113,7 +113,7 @@ p+labs(title="Day 1: Impressions vs Age Group", # add title
        x="Impressions",y="Density",colour="Age Group") 
 ```
 
-**Define a new variable to segment users based on click -through-rate (CTR) behavior. CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8 **
+**Define a new variable to segment users based on click -through-rate (CTR) behavior. CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8**
 
 ```{r}
 #segment users based on click -through-rate (CTR) b
@@ -122,7 +122,7 @@ ImpSub$CTR_Segments <- cut(ImpSub$CTR,c(0,0.2,0.4,0.6,0.8,Inf))
 levels(ImpSub$CTR_Segments) <- c("<0.20","0.20-0.40","0.40-0.60","0.60-0.80",">0.80")
 ```
 
-**Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male) **
+**Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male)**
 
 ```{r}
 #Convert Numeric to Male/Female:
@@ -142,7 +142,7 @@ colnames(sum_stats) <- c("Gender","Total Impressions","Clicks","Signed_In") #ren
 sum_stats
 ```
 
-**Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In **
+**Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In**
 
 ```{r}
 #aggregate and compute the average Age, Impressions, Clicks, CTR and percentage of males and signed_In

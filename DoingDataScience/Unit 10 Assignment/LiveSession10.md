@@ -58,8 +58,8 @@ df<-mydata("Data/nyt",1,2)
 ```
 
 ```
-## Dimensions: 722501 5NULL
-## Run Time: 1.523 0.048 1.572 0 0NULL
+## Dimensions: 722979 5NULL
+## Run Time: 1.647 0.055 1.707 0 0NULL
 ```
 
 
@@ -143,7 +143,7 @@ p+labs(title="Day 1: Impressions vs Age Group", # add title
 
 ![](LiveSession10_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
-**Define a new variable to segment users based on click -through-rate (CTR) behavior. CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8 **
+**Define a new variable to segment users based on click -through-rate (CTR) behavior. CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8**
 
 
 ```r
@@ -153,7 +153,7 @@ ImpSub$CTR_Segments <- cut(ImpSub$CTR,c(0,0.2,0.4,0.6,0.8,Inf))
 levels(ImpSub$CTR_Segments) <- c("<0.20","0.20-0.40","0.40-0.60","0.60-0.80",">0.80")
 ```
 
-**Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male) **
+**Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male)**
 
 
 ```r
@@ -178,10 +178,10 @@ sum_stats
 
 ```
 ##   Gender Total Impressions Clicks Signed_In
-## 1   Male           1339827  18823    265945
+## 1   Male           1340827  18841    266135
 ```
 
-**Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In **
+**Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In**
 
 
 ```r
@@ -193,7 +193,7 @@ sum_stats
 
 ```
 ##   Gender Avg Impressions Avg Clicks Signed_In
-## 1   Male         1339827      18823    265945
+## 1   Male         1340827      18841    266135
 ```
 
 **Get the means of Impressions, Clicks, CTR and percentage of males and signed_In  by AgeGroup.**
@@ -208,13 +208,13 @@ Age_stats
 
 ```
 ##   AgeGroup Impressions Avg Clicks         CTR
-## 1      <18    5.039246 0.13807127 0.027051070
-## 2    18-24    5.034100 0.05088102 0.009965498
-## 3    25-34    5.030980 0.04891271 0.009820643
-## 4    35-44    5.034921 0.05109746 0.010098988
-## 5    45-54    5.040067 0.05180857 0.010335880
-## 6    55-64    5.053941 0.10190645 0.020241640
-## 7      65+    5.031845 0.15177552 0.030028282
+## 1      <18    5.038721 0.13801514 0.027040073
+## 2    18-24    5.034530 0.05102417 0.010037474
+## 3    25-34    5.031578 0.04892166 0.009818747
+## 4    35-44    5.035230 0.05105976 0.010091537
+## 5    45-54    5.040085 0.05185776 0.010348556
+## 6    55-64    5.054160 0.10187313 0.020242139
+## 7      65+    5.030858 0.15188810 0.030078087
 ```
 
 **Create a table of CTRGroup vs AgeGroup counts.**
@@ -230,11 +230,11 @@ count.group
 ```
 ##            
 ##              <18 18-24 25-34 35-44 45-54 55-64  65+
-##   <0.20     2665  1993  3092  3969  3497  4717 4218
-##   0.20-0.40  987   685  1080  1329  1239  1720 1747
-##   0.40-0.60  181    91   149   184   194   272  252
+##   <0.20     2665  1997  3094  3973  3501  4717 4224
+##   0.20-0.40  987   685  1080  1329  1241  1724 1747
+##   0.40-0.60  181    91   149   184   194   272  254
 ##   0.60-0.80    8     5     6     5     1    15   17
-##   >0.80       16    22    38    29    37    63   36
+##   >0.80       16    24    38    29    37    63   36
 ```
 
 **Additional Exploratory Analysis**
