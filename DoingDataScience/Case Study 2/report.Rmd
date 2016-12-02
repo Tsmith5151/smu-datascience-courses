@@ -415,24 +415,18 @@ p + labs(title="Yearly Avg. Difference Temperature") +
   theme(plot.title=element_text(hjust=0.5)) + geom_line(aes(x=Years2,y=AvgTempDiff),colour="Blue",lwd=1)
 ```
 
-  - **c) Continue: Provide the maximum difference (value) with corresponding two years.**
-```{r}
-#compute the maximum difference in yearly avg. temp between "n" years 
-max.two.year.diff <- function(df.col,n){# take arguments df["colname"] and n_years
-  diff <- numeric() #initialize vector
-  for(i in 1:length(df.col)){#iterate from i to length of df.col
-    diff[i]<-df.col[i+n]-df.col[i] #compute the difference in yearly temp for given time frame
-  }
-  diff.max<-diff[1:(length(diff)-n)] #remove the dates beyond 2013; where diff=NA
-  print(paste0("The max ",n," year difference in avg. yearly temp is:")) 
-  return(max(diff.max)) #return maximum difference yearly avg. temp
-}
+#### As you can see from the above two graphs it looks like the difference between the average temperature of the last two years of the data set 2012 and 2013 is the largest between any consecutive years.  That value is easy to calculate and is 1.86485.  
 
-df.col<-df.temp.usa$Temp_F
-#call the max.two.year.diff function and pass the Temp_F column 
-#and the number of years between
-max.two.year.diff(df.col,n=2)
+
+<br>  
+
+```{r}
+# Max difference
+max(temp.usa.ydiff$AvgTempDiff)
 ```
+
+#### Again the maximum yearly difference was seen in the last two years 2012-2013.
+
 <br>  
 
 ####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.  

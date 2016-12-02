@@ -72,13 +72,6 @@ ADP, LLC., is an American provider of human resources management software and se
 library(tseries)
 # SNPdatahist <- get.hist.quote('^gspc',quote='Close')
 SNPdata <- get.hist.quote("adp", quote = "Close")
-```
-
-```
-## time series ends   2016-11-25
-```
-
-```r
 plot(SNPdata, col = "red", main = "Stock: Automatic Data Processing, Inc.", xlab = "Year", 
     ylab = "Closing Price")
 ```
@@ -106,7 +99,7 @@ SNPvol
 ```
 
 ```
-## [1] 34.29705
+## [1] 34.29001
 ```
 
 <br>  
@@ -122,7 +115,7 @@ get
 ## function (x, pos = -1L, envir = as.environment(pos), mode = "any", 
 ##     inherits = TRUE) 
 ## .Internal(get(x, envir, mode, inherits))
-## <bytecode: 0x00000000135e7060>
+## <bytecode: 0x00000000135e7080>
 ## <environment: namespace:base>
 ```
 
@@ -612,35 +605,23 @@ p + labs(title = "Yearly Avg. Difference Temperature") + theme_bw() + theme(pane
 
 <img src="report_files/figure-html/unnamed-chunk-30-1.png" width="850px" />
 
-  - **c) Continue: Provide the maximum difference (value) with corresponding two years.**
+#### As you can see from the above two graphs it looks like the difference between the average temperature of the last two years of the data set 2012 and 2013 is the largest between any consecutive years.  That value is easy to calculate and is 1.86485.  
+
+
+<br>  
+
 
 ```r
-# compute the maximum difference in yearly avg. temp between 'n' years take
-# arguments df['colname'] and n_years
-max.two.year.diff <- function(df.col, n) {
-    diff <- numeric()  #initialize vector
-    for (i in 1:length(df.col)) {
-        # iterate from i to length of df.col
-        diff[i] <- df.col[i + n] - df.col[i]  #compute the difference in yearly temp for given time frame
-    }
-    diff.max <- diff[1:(length(diff) - n)]  #remove the dates beyond 2013; where diff=NA
-    print(paste0("The max ", n, " year difference in avg. yearly temp is:"))
-    return(max(diff.max))  #return maximum difference yearly avg. temp
-}
-
-df.col <- df.temp.usa$Temp_F
-# call the max.two.year.diff function and pass the Temp_F column and the number
-# of years between
-max.two.year.diff(df.col, n = 2)
+# Max difference
+max(temp.usa.ydiff$AvgTempDiff)
 ```
 
 ```
-## [1] "The max 2 year difference in avg. yearly temp is:"
+## [1] 1.86485
 ```
 
-```
-## [1] 3.14495
-```
+#### Again the maximum yearly difference was seen in the last two years 2012-2013.
+
 <br>  
 
 ####(iii) Download 'CityTemp' data set. Find the difference between the maximum and the minimum temperatures for each major city and report/visualize top 20 cities with maximum differences for the period since 1900.  
