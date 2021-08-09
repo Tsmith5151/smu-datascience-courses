@@ -1,0 +1,645 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## MSDS: 7337 - Natural Language Processing\n",
+    "**Author: Trace Smith**\n",
+    "**Homework Assignment: 4**\n",
+    "________"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Spacy 2.0.12\n",
+      "Numpy 1.16.3\n",
+      "NLTK 3.3\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Python Libraries\n",
+    "import nltk\n",
+    "import spacy; print(\"Spacy\",spacy.__version__)\n",
+    "import numpy as np; print(\"Numpy\",np.__version__)\n",
+    "from string import punctuation\n",
+    "from nltk.corpus import stopwords\n",
+    "from nltk.stem.porter import PorterStemmer; print(\"NLTK\",nltk.__version__)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** 1.) Run one of the part-of-speech (POS) taggers available in Python.**\n",
+    "- A. Find the longest sentence you can, longer than 10 words, that the POS tagger tags correctly. Show the input and output. \n",
+    "- B. Find the shortest sentence you can, shorter than 10 words, that the POS tagger fails to tag 100 percent correctly. Show the input and output. Explain your conjecture as to why the tagger might have been less than perfect with this sentence. ",
+    "\n",
+    "\n",
+    "\n",
+    "_______________\n",
+    "** Source for Sentences **\n",
+    "- Refernce: https://www.latimes.com/sports/lakers/la-sp-lakers-trade-anthony-davis-lebron-james-20190615-story.html\n",
+    "\n",
+    "** Long Sentence**\n",
+    "- \"In dealing Lonzo Ball, Brandon Ingram, Josh Hart and three first-round draft picks to the New Orleans Pelicans for the NBA’s most dominating inside presence Saturday, the Lakers did more than just add a giant superstar.\"\n",
+    "\n",
+    "** Short Sentence **\n",
+    "- \"This was a trade for Davis’ future\"\n",
+    "\n",
+    "\n",
+    "** Discussion **\n",
+    "\n",
+    "- The POS tagger with Spacy and NLTK performs relatively wells. It's observed though that tagging words such as 'Pelicans' tagged as NNPS (e.g. Proper noun, plural), however, 'Pelicans' is the name of an NBA team and thus is only team name, not more than once. Therefore, the POS tagging expected here would be NNP (e.g. Proper noun, singular). The POS tagging for the shorter sentence is correct. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 101,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "text_long = \"\"\"\"In dealing Lonzo Ball, Brandon Ingram, Josh Hart and three first-round draft picks to the New Orleans Pelicans for the NBA’s most dominating inside presence Saturday, the Lakers did more than just add a giant superstar.\"\"\"\n",
+    "\n",
+    "text_short = \"This was a trade for Davis’ future\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 98,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import en_core_web_sm\n",
+    "nlp = en_core_web_sm.load()\n",
+    "\n",
+    "def pos_tagging(text,tagger=None,verbose=None):\n",
+    "    \"\"\"\n",
+    "    Parts of Speech Tagging using Two Methods: Spacy and NLTK\n",
+    "    \"\"\"\n",
+    "    print('='*100)\n",
+    "    print('Length of Sentence: ',len(text.split(' ')))\n",
+    "    print('** Token,Parts of Speech using: {}**'.format(tagger))\n",
+    "    \n",
+    "    results = []\n",
+    "    if tagger == 'spacy':\n",
+    "        tokens = nlp(text)\n",
+    "        for idx,token in enumerate(tokens):\n",
+    "            print(tokens[idx],'-->',token.tag_)\n",
+    "            \n",
+    "            # Save results\n",
+    "            results.append((tokens[idx],token.tag_))\n",
+    "    elif tagger == 'nltk':\n",
+    "        tokens = nltk.word_tokenize(text)\n",
+    "        pos_ = nltk.pos_tag(tokens)\n",
+    "        for idx,tag in enumerate(pos_):\n",
+    "            print(tokens[idx],'-->',tag[1])\n",
+    "            \n",
+    "            # Save results\n",
+    "            results.append((tokens[idx],tag[1]))\n",
+    "    else:\n",
+    "        raise ValueError('Not a correct POS tagger -> Use spacy or nltk!')\n",
+    "        \n",
+    "    \n",
+    "    print('='*100) \n",
+    "    if verbose:\n",
+    "        return results"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** POS Tagging with spaCy**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 99,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "====================================================================================================\n",
+      "Length of Sentence:  36\n",
+      "** Token,Parts of Speech using: spacy**\n",
+      "\" --> ``\n",
+      "In --> IN\n",
+      "dealing --> VBG\n",
+      "Lonzo --> NNP\n",
+      "Ball --> NNP\n",
+      ", --> ,\n",
+      "Brandon --> NNP\n",
+      "Ingram --> NNP\n",
+      ", --> ,\n",
+      "Josh --> NNP\n",
+      "Hart --> NNP\n",
+      "and --> CC\n",
+      "three --> CD\n",
+      "first --> JJ\n",
+      "- --> HYPH\n",
+      "round --> NN\n",
+      "draft --> NN\n",
+      "picks --> NNS\n",
+      "to --> IN\n",
+      "the --> DT\n",
+      "New --> NNP\n",
+      "Orleans --> NNP\n",
+      "Pelicans --> NNPS\n",
+      "for --> IN\n",
+      "the --> DT\n",
+      "NBA --> NNP\n",
+      "’s --> POS\n",
+      "most --> JJS\n",
+      "dominating --> VBG\n",
+      "inside --> IN\n",
+      "presence --> NN\n",
+      "Saturday --> NNP\n",
+      ", --> ,\n",
+      "the --> DT\n",
+      "Lakers --> NNPS\n",
+      "did --> VBD\n",
+      "more --> JJR\n",
+      "than --> IN\n",
+      "just --> RB\n",
+      "add --> VB\n",
+      "a --> DT\n",
+      "giant --> JJ\n",
+      "superstar --> NN\n",
+      ". --> .\n",
+      "====================================================================================================\n"
+     ]
+    }
+   ],
+   "source": [
+    "pos_tagging(text_long,'spacy')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** POS Tagging with NLTK**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 100,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "====================================================================================================\n",
+      "Length of Sentence:  7\n",
+      "** Token,Parts of Speech using: nltk**\n",
+      "This --> DT\n",
+      "was --> VBD\n",
+      "a --> DT\n",
+      "trade --> NN\n",
+      "for --> IN\n",
+      "Davis --> NNP\n",
+      "’ --> NNP\n",
+      "future --> NN\n",
+      "====================================================================================================\n"
+     ]
+    }
+   ],
+   "source": [
+    "pos_tagging(text_short,'nltk')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** 2.\tRun a different POS tagger in Python. Process the same two sentences from question 1.**\n",
+    "- A.\tDoes it produce the same or different output? \n",
+    "- B.\tExplain any differences as best you can.\n",
+    "\n",
+    "\n",
+    "________\n",
+    "** Discussion **\n",
+    "\n",
+    "The tagging is very similar between NLTK and spaCy for the long sentence. One difference is the term \"inside\" which NLTK tags as an adjective, where spaCy tags as preposition. The context of 'inside' here refers to an NBA position (e.g. inside position) such as 'Center' or 'Forward Center'. The difference between the two approaches, NLTK and spaCy could be as a result of the algorithm used for the tagging. SpaCy uses statistical model word embeddings, which enables spaCy to make a prediction of which tag or label most likely applies in this context. For this particular case, the model did not generalize to correctly tag the word \"inside\"."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 110,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# NLTK POS Tagging\n",
+    "def pos_tagging_nltk(text):\n",
+    "    print('='*100)\n",
+    "    print('Length of Sentence: ',len(text.split(' ')))\n",
+    "    print('** Token,Parts of Speech **')\n",
+    "    \n",
+    "    tokens = nltk.word_tokenize(text)\n",
+    "    pos_ = nltk.pos_tag(tokens)\n",
+    "    for idx,tag in enumerate(pos_):\n",
+    "        print(tokens[idx],'-->',tag[1])\n",
+    "    print('='*100)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 111,
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "====================================================================================================\n",
+      "Length of Sentence:  35\n",
+      "** Token,Parts of Speech **\n",
+      "`` --> ``\n",
+      "In --> IN\n",
+      "dealing --> VBG\n",
+      "Lonzo --> NNP\n",
+      "Ball --> NNP\n",
+      ", --> ,\n",
+      "Brandon --> NNP\n",
+      "Ingram --> NNP\n",
+      ", --> ,\n",
+      "Josh --> NNP\n",
+      "Hart --> NNP\n",
+      "and --> CC\n",
+      "three --> CD\n",
+      "first-round --> NN\n",
+      "draft --> NN\n",
+      "picks --> NNS\n",
+      "to --> TO\n",
+      "the --> DT\n",
+      "New --> NNP\n",
+      "Orleans --> NNP\n",
+      "Pelicans --> NNPS\n",
+      "for --> IN\n",
+      "the --> DT\n",
+      "NBA --> NNP\n",
+      "’ --> NNP\n",
+      "s --> VBZ\n",
+      "most --> JJS\n",
+      "dominating --> JJ\n",
+      "inside --> JJ\n",
+      "presence --> NN\n",
+      "Saturday --> NNP\n",
+      ", --> ,\n",
+      "the --> DT\n",
+      "Lakers --> NNPS\n",
+      "did --> VBD\n",
+      "more --> JJR\n",
+      "than --> IN\n",
+      "just --> RB\n",
+      "add --> VB\n",
+      "a --> DT\n",
+      "giant --> JJ\n",
+      "superstar --> NN\n",
+      ". --> .\n",
+      "====================================================================================================\n"
+     ]
+    }
+   ],
+   "source": [
+    "pos_tagging_nltk(text_long)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "====================================================================================================\n",
+      "Length of Sentence:  7\n",
+      "** Token,Parts of Speech using: spacy**\n",
+      "This --> DT\n",
+      "was --> VBD\n",
+      "a --> DT\n",
+      "trade --> NN\n",
+      "for --> IN\n",
+      "Davis’ --> NNS\n",
+      "future --> NN\n",
+      "====================================================================================================\n"
+     ]
+    }
+   ],
+   "source": [
+    "pos_tagging(text_short,'spacy')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Spacy's tagger is statistical, meaning that the tags you get are its best estimate based on the data it was shown during training. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** 3.\tIn a news article from this week’s news, find a random sentence of at least 10 words.** \n",
+    "- A.\tLooking at the Penn tag set, manually POS tag the sentence yourself.\n",
+    "- B.\tNow run the same sentences through both taggers that you implemented for questions 1 and 2. \n",
+    "    - Did either of the taggers produce the same results as you had created manually?\n",
+    "- C.\tExplain any differences between the two taggers and your manual tagging as much as you can.\n",
+    "\n",
+    "\n",
+    "** Penn POS Tagging**\n",
+    "\n",
+    "1.\tCC\tCoordinating conjunction\n",
+    "2.\tCD\tCardinal number\n",
+    "3.\tDT\tDeterminer\n",
+    "4.\tEX\tExistential there\n",
+    "5.\tFW\tForeign word\n",
+    "6.\tIN\tPreposition or subordinating conjunction\n",
+    "7.\tJJ\tAdjective\n",
+    "8.\tJJR\tAdjective, comparative\n",
+    "9.\tJJS\tAdjective, superlative\n",
+    "10.\tLS\tList item marker\n",
+    "11.\tMD\tModal\n",
+    "12.\tNN\tNoun, singular or mass\n",
+    "13.\tNNS\tNoun, plural\n",
+    "14.\tNNP\tProper noun, singular\n",
+    "15.\tNNPS\tProper noun, plural\n",
+    "16.\tPDT\tPredeterminer\n",
+    "17.\tPOS\tPossessive ending\n",
+    "18.\tPRP\tPersonal pronoun\n",
+    "19.\tPRP$\tPossessive pronoun\n",
+    "20.\tRB\tAdverb\n",
+    "21.\tRBR\tAdverb, comparative\n",
+    "22.\tRBS\tAdverb, superlative\n",
+    "23.\tRP\tParticle\n",
+    "24.\tSYM\tSymbol\n",
+    "25.\tTO\tto\n",
+    "26.\tUH\tInterjection\n",
+    "27.\tVB\tVerb, base form\n",
+    "28.\tVBD\tVerb, past tense\n",
+    "29.\tVBG\tVerb, gerund or present participle\n",
+    "30.\tVBN\tVerb, past participle\n",
+    "31.\tVBP\tVerb, non-3rd person singular present\n",
+    "32.\tVBZ\tVerb, 3rd person singular present\n",
+    "33.\tWDT\tWh-determiner\n",
+    "34.\tWP\tWh-pronoun\n",
+    "35.\tWP\tPossessive wh-pronoun\n",
+    "36.\tWRB\tWh-adverb\n",
+    "\n",
+    "\n",
+    "_________\n",
+    "** Discussion **\n",
+    " \n",
+    "In this question, we compared a manual POS tagging with that of NLTK and spaCy. The results between the two methods were identical, with roughly a 25 percent error rate. The POS tagger incorrectly tagged the label for NNPS (e.g. Proper noun, plural) instead of NNP (e.g. Proper noun). For instance, 'Warriors' should be tagged as NNP as there is only one team team \"Warriors\" - not plural. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sentence = \"\"\"With the Warriors finally decimated and probably gone, the path to the NBA Finals has been cleared for another dominant West team, and the Lakers just became it.\"\"\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Manual Tagging using Penn Treebank ** "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 89,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "manual_pos = [\n",
+    "            ('With','IN'),\n",
+    "            ('the','DT'),\n",
+    "            ('Warriors','NNP'),\n",
+    "            ('finally','RB'),\n",
+    "            ('decimated','VBD'),\n",
+    "            ('and','CC'),\n",
+    "            ('probably','RB'),\n",
+    "            ('gone','VBD'),\n",
+    "            (',',','),\n",
+    "            ('the','DT'),\n",
+    "            ('path','NN'),\n",
+    "            ('to','DT'),\n",
+    "            ('the','DT'),\n",
+    "            ('NBA','NNP'),\n",
+    "            ('Finals','NNP'),\n",
+    "            ('has','VBD'),\n",
+    "            ('been','VBD'),\n",
+    "            ('cleared','VBN'),\n",
+    "            ('for','DT'),\n",
+    "            ('another','DT'),\n",
+    "            ('dominant','JJ'),\n",
+    "            ('West','NNP'),\n",
+    "            ('team','NN'),\n",
+    "            (',',','),\n",
+    "            ('and','CC'),\n",
+    "            ('the','DT'),\n",
+    "            ('Lakers','NNPS'),\n",
+    "            ('just','RB'),\n",
+    "            ('became','VBD'),\n",
+    "            ('it','PRP'),\n",
+    "            ('.','.')\n",
+    "            ]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** POS Tagging with spaCy**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 92,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "====================================================================================================\n",
+      "Length of Sentence:  28\n",
+      "** Token,Parts of Speech using: spacy**\n",
+      "With --> IN\n",
+      "the --> DT\n",
+      "Warriors --> NNPS\n",
+      "finally --> RB\n",
+      "decimated --> VBD\n",
+      "and --> CC\n",
+      "probably --> RB\n",
+      "gone --> VBN\n",
+      ", --> ,\n",
+      "the --> DT\n",
+      "path --> NN\n",
+      "to --> IN\n",
+      "the --> DT\n",
+      "NBA --> NNP\n",
+      "Finals --> NNPS\n",
+      "has --> VBZ\n",
+      "been --> VBN\n",
+      "cleared --> VBN\n",
+      "for --> IN\n",
+      "another --> DT\n",
+      "dominant --> JJ\n",
+      "West --> JJ\n",
+      "team --> NN\n",
+      ", --> ,\n",
+      "and --> CC\n",
+      "the --> DT\n",
+      "Lakers --> NNPS\n",
+      "just --> RB\n",
+      "became --> VBD\n",
+      "it --> PRP\n",
+      ". --> .\n",
+      "====================================================================================================\n"
+     ]
+    }
+   ],
+   "source": [
+    "pos_spacy = pos_tagging(sentence,'spacy',True)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** POS Tagging with NLTK**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "====================================================================================================\n",
+      "Length of Sentence:  28\n",
+      "** Token,Parts of Speech using: spacy**\n",
+      "With --> IN\n",
+      "the --> DT\n",
+      "Warriors --> NNPS\n",
+      "finally --> RB\n",
+      "decimated --> VBD\n",
+      "and --> CC\n",
+      "probably --> RB\n",
+      "gone --> VBN\n",
+      ", --> ,\n",
+      "the --> DT\n",
+      "path --> NN\n",
+      "to --> IN\n",
+      "the --> DT\n",
+      "NBA --> NNP\n",
+      "Finals --> NNPS\n",
+      "has --> VBZ\n",
+      "been --> VBN\n",
+      "cleared --> VBN\n",
+      "for --> IN\n",
+      "another --> DT\n",
+      "dominant --> JJ\n",
+      "West --> JJ\n",
+      "team --> NN\n",
+      ", --> ,\n",
+      "and --> CC\n",
+      "the --> DT\n",
+      "Lakers --> NNPS\n",
+      "just --> RB\n",
+      "became --> VBD\n",
+      "it --> PRP\n",
+      ". --> .\n",
+      "====================================================================================================\n"
+     ]
+    }
+   ],
+   "source": [
+    "pos_nltk = pos_tagging(sentence,'spacy',True)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** Compute Tagging Error: Manual vs Spacy ** "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 96,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Parts of Speech Tagging Error with Spacy: 25.81%\n",
+      "Parts of Speech Tagging Error with NLTK: 25.81%\n"
+     ]
+    }
+   ],
+   "source": [
+    "def compute_difference_pos(manual,tagger,name=None):\n",
+    "    \n",
+    "    \"\"\" Compute Parts of Speech Tagging Error \"\"\"\n",
+    "    \n",
+    "    m = [i[1] for i in manual]\n",
+    "    t = [i[1] for i in tagger]\n",
+    "    \n",
+    "    error = len([i for i, j in zip(m, t) if i != j]) / len(m)\n",
+    "    print('Parts of Speech Tagging Error with {0}: {1:.2f}%'.format(name,error * 100))\n",
+    "    \n",
+    "compute_difference_pos(manual_pos,pos_spacy,'Spacy')\n",
+    "compute_difference_pos(manual_pos,pos_nltk,'NLTK')"
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python [conda root]",
+   "language": "python",
+   "name": "conda-root-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.5.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

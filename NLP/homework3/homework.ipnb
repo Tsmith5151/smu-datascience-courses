@@ -1,0 +1,180 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## MSDS: 7337 - Natural Language Processing\n",
+    "**Author: Trace Smith**\n",
+    "**Homework Assignment: 3**\n",
+    "________"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 107,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Numpy 1.16.3\n",
+      "NLTK 3.3\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Python Libraries\n",
+    "import nltk\n",
+    "import numpy as np; print(\"Numpy\",np.__version__)\n",
+    "from string import punctuation\n",
+    "from nltk.corpus import stopwords\n",
+    "from nltk.stem.porter import PorterStemmer; print(\"NLTK\",nltk.__version__)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**1.\tCompare your given name with your nickname (if you don’t have a nickname, invent one for this assignment) by answering the following questions:**\n",
+    "- A.) What is the edit distance between your nickname and your given name?\n",
+    "- B.) What is the percentage string match between your nickname and your given name?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 112,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "A.) Edit Distance Between Name Trace and Nickname TSmith = 5\n",
+      "B.) Percentage String Match Between Name Trace and Nickname TSmith = %20.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "name = 'Trace'\n",
+    "nickname = 'TSmith'\n",
+    "\n",
+    "# A.) Edit Distance\n",
+    "print(\"A.) Edit Distance Between Name %s and Nickname %s = %d\" % (name,nickname,nltk.edit_distance(name,nickname)))\n",
+    "\n",
+    "# B.) Percentage String Match\n",
+    "print(\"B.) Percentage String Match Between Name {} and Nickname {} = %{}\"\\\n",
+    "      .format(name,nickname,(len(set('Trace').intersection('TSmith')) / (len('Trace'))) * 100))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**2. Find a friend (or family member or classmate) who you know has read a certain book. Without your friend knowing, copy the first two sentences of that book. Now rewrite the words from those sentences, excluding stop words. Now tell your friend to guess which book the words are from by reading them just that list of words. Did you friend correctly guess the book on the first try? What did he or she guess? Explain why you think you friend either was or was not able to guess the book from hearing the list of words. **\n",
+    "\n",
+    "- **Discussion: ** The book a friend of mine was reading recently was Fahrenheit 451. I recorded the first two sentences of this book and removed all stopwords and punctuation from the text. By reading the tokens shown below to my friend, he was able to state which book I was referring too. The key words \"blazing\" and \"burning\" was probably a give away on the book - but this lends to the idea of topic modeling (e.g. LDA) which describes the probability or chance of selecting a particular words when sampling a particular topic. Hence, the words appearing in the first two sentences were easily distinguishable in terms of the associated book. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['please', 'see', 'things', 'eaten,', 'see', 'things', 'blackened', 'changed.', 'brass', 'nozzle', '\\nfists,', 'great', 'python', 'spitting', 'venomous', 'kerosene', 'upon', 'world', 'blood', 'pounded', 'head,', '\\nhands', 'hands', 'amazing', 'conductor', 'playing', 'symphonies', 'blazing', 'burning', 'bring', '\\ntatters', 'charcoal', 'ruins', 'history.']\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Fahrenheit 451\n",
+    "\n",
+    "text = \"\"\"It was a please to see things eaten, to see things blackened and changed. With the brass nozzle in his \n",
+    "fists, with this great python spitting its venomous kerosene upon the world the blood pounded in his head, and his \n",
+    "hands were the hands of some amazing conductor playing all the symphonies of blazing and burning to bring down the \n",
+    "tatters and charcoal ruins of history.\"\"\"\n",
+    "\n",
+    "\n",
+    "tokens = [word for word in text if word not in punctuation]\n",
+    "tokens = text.lower().split(' ')\n",
+    "tokens = [word for word in tokens if word not in set(stopwords.words('english'))]\n",
+    "print(tokens)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "** 3. Run one of the stemmers available in Python. Run the same two sentences from question 2 above through the stemmer and show the results. How many of the outputted stems are valid morphological roots of the corresponding words? Express this answer as a percentage.**\n",
+    "\n",
+    "- **Discussion:** The assumption made for this question is to use the tokens without stopwords. The algorithm used here is Porter stemming - which is widely popular in NLP. This stemming method is the process for removing the commoner morphological and inflexional endings from words in English. Its main use is as part of a term normalization process that is usually done when setting up information retrieval systems.\n",
+    "\n",
+    "Source: https://tartarus.org/martin/PorterStemmer/"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['pleas', 'see', 'thing', 'eaten,', 'see', 'thing', 'blacken', 'changed.', 'brass', 'nozzl', '\\nfists,', 'great', 'python', 'spit', 'venom', 'kerosen', 'upon', 'world', 'blood', 'pound', 'head,', '\\nhand', 'hand', 'amaz', 'conductor', 'play', 'symphoni', 'blaze', 'burn', 'bring', '\\ntatter', 'charcoal', 'ruin', 'history.']\n"
+     ]
+    }
+   ],
+   "source": [
+    "# stemming of words\n",
+    "porter = PorterStemmer()\n",
+    "stemmed = [porter.stem(word) for word in tokens]\n",
+    "print(stemmed)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 109,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Total stems that are valid morphological roots of the corresponding words: 0.5\n"
+     ]
+    }
+   ],
+   "source": [
+    "print('Total stems that are valid morphological roots of the corresponding words: {}'\n",
+    "      .format(len(set(tokens) - set(stemmed)) / len(tokens)))"
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

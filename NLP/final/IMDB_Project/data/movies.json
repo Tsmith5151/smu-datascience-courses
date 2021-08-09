@@ -1,0 +1,12 @@
+[
+{"users_rating": "7.1", "year": "2019", "title": "The Lion King", "genre": ["Animation", "Adventure", "Drama", "Family", "Musical"], "imdb_url": "https://www.imdb.com/title/tt6105098/"},
+{"users_rating": "7.0", "year": "2019", "title": "Fast & Furious Presents: Hobbs & Shaw", "genre": ["Action", "Adventure"], "imdb_url": "https://www.imdb.com/title/tt6806448/"},
+{"users_rating": "8.4", "year": "2019", "title": "Once Upon a Time ... in Hollywood", "genre": ["Comedy", "Drama"], "imdb_url": "https://www.imdb.com/title/tt7131622/"},
+{"users_rating": "8.6", "year": "2019", "title": "Avengers: Endgame", "genre": ["Action", "Adventure", "Sci-Fi"], "imdb_url": "https://www.imdb.com/title/tt4154796/"},
+{"users_rating": null, "year": "2019", "title": "The Irishman", "genre": ["Biography", "Crime", "Drama", "History", "Thriller"], "imdb_url": "https://www.imdb.com/title/tt1302006/"},
+{"users_rating": "6.5", "year": "2019", "title": "The Red Sea Diving Resort", "genre": ["Drama", "History", "Thriller"], "imdb_url": "https://www.imdb.com/title/tt4995776/"},
+{"users_rating": "7.9", "year": "2019", "title": "Spider-Man: Far from Home", "genre": ["Action", "Adventure", "Sci-Fi"], "imdb_url": "https://www.imdb.com/title/tt6320628/"},
+{"users_rating": "7.4", "year": "2019", "title": "Alita: Battle Angel", "genre": ["Action", "Adventure", "Sci-Fi", "Thriller"], "imdb_url": "https://www.imdb.com/title/tt0437086/"},
+{"users_rating": "7.6", "year": "2019", "title": "Midsommar", "genre": ["Drama", "Horror", "Mystery", "Thriller"], "imdb_url": "https://www.imdb.com/title/tt8772262/"},
+{"users_rating": null, "year": "2019", "title": "It Chapter Two", "genre": ["Horror", "Thriller"], "imdb_url": "https://www.imdb.com/title/tt7349950/"}
+]
